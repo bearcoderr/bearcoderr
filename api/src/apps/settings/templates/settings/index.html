@@ -1,0 +1,445 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <main class="site-content" id="content">
+        <!-- HERO SECTION START -->
+        <section class="hero-section d-flex align-items-center" id="intro">
+            <div class="intro_text">
+                <svg viewBox="0 0 1320 300">
+                    <text x="50%" Y="50%" text-anchor="middle">
+                        HI
+                    </text>
+                </svg>
+            </div>
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <div class="hero-content-box">
+                            <span class="hero-sub-title wow fadeInLeft" data-wow-delay="1.1s">{{ settings.sub_titleHome }}</span>
+                            <h1 class="hero-title wow fadeInLeft" data-wow-delay="1.2s">{{ settings.titleHome }}</h1>
+
+                            <div class="hero-image-box d-md-none text-center wow fadeInRight" data-wow-delay="1.3s">
+                                <img src="{{ url.settings.titleHome }}" alt="{{ settings.titleHome }}">
+                            </div>
+
+                            <p class="lead wow fadeInLeft" data-wow-delay="1.4s">{{ settings.textHome }}</p>
+                            <div class="button-box d-flex flex-wrap align-items-center">
+                                <a href="{% url 'generate_pdf' %}" class="btn tj-btn-secondary wow fadeInLeft" data-wow-delay="1.5s">Скачать PDF</a>
+                                
+                                <ul class="ul-reset social-icons wow fadeInLeft" data-wow-delay="1.6s">
+                                    {% for social in social_networks %}
+                                        <li><a href="{{ social.lincSocial }}"><i class="fa-brands {{ social.classSocial }}"></i></a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 d-none d-md-block">
+                        <div class="hero-image-box text-center wow fadeInRight" data-wow-delay="1.5s">
+                            <img src="https://bearcoder.ru/media/media/photos/home/llL8jFB-9GM_NT5hUU7.webp" alt="">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="funfact-area">
+                    <div class="row">
+                        {% for number in number_settings %}
+                            <div class="col-6 col-lg-3">
+                                <div class="funfact-item d-flex flex-column flex-sm-row flex-wrap align-items-center">
+                                    <div class="number"><span class="odometer" data-count="{{ number.numberTitle }}">0</span>{{ number.numberDopSimvol }}</div>
+                                    <div class="text">{{ number.numberText }}</div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- HERO SECTION END -->
+
+        <!-- SERVICES SECTION START -->
+        <section class="services-section" id="services-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="section-header text-center">
+                            <h2 class="section-title wow fadeInUp" data-wow-delay=".3s">Что я могу</h2>
+                            <p class=" wow fadeInUp" data-wow-delay=".4s">Мои достижения - это результат моей преданности, упорства и веры в собственные возможности. Каждый шаг вперед - это новая победа на пути к моим мечтам.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="services-widget position-relative">
+
+                            {% for services in services_site %}
+
+
+                                <div class="service-item current d-flex flex-wrap align-items-center wow fadeInUp" data-wow-delay=".5s">
+                                    <div class="left-box d-flex flex-wrap align-items-center">
+                                        <span class="number">{{ forloop.counter }}</span>
+                                        <h3 class="service-title">{{ services.titleServices }}</h3>
+                                    </div>
+                                    <div class="right-box">
+                                        <p>{{ services.exeptServices|truncatechars:250 }}</p>
+                                    </div>
+                                    <i class="flaticon-up-right-arrow"></i>
+                                    <button data-mfp-src="#service-wrapper-{{ forloop.counter }}" class="service-link modal-popup"></button>
+                                </div>
+
+                            <!-- start: Service Popup -->
+                                <div id="service-wrapper-{{ forloop.counter }}" class="popup_content_area zoom-anim-dialog mfp-hide">
+                                    <div class="popup_modal_img">
+                                        <img src="{{ services.imgServices.url }}" alt="{{ services.titleServices }}">
+                                    </div>
+                                    <div class="popup_modal_content">
+                                        <div class="service_details">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="service_details_content">
+                                                        <div class="service_info">
+                                                            <h2 class="title">{{ services.titleServices }}</h2>
+                                                            <div class="cont">
+                                                                {{ services.contentServices | safe }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end: Service Popup -->
+
+
+
+                            {% endfor %}
+
+                            <div class="active-bg wow fadeInUp" data-wow-delay=".5s"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- SERVICES SECTION END -->
+
+
+
+        <!-- PORTFOLIO SECTION START -->
+        <!-- <section class="portfolio-section" id="works-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="section-header text-center">
+                            <h2 class="section-title wow fadeInUp" data-wow-delay=".3s">My Recent Works</h2>
+                            <p class=" wow fadeInUp" data-wow-delay=".4s">We put your ideas and thus your wishes in the
+                                form of a unique web project that inspires
+                                you
+                                and you customers.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="portfolio-filter text-center wow fadeInUp" data-wow-delay=".5s">
+                            <div class="button-group filter-button-group">
+                                <button data-filter="*" class="active">All</button>
+                                {% for category in category_worck %}
+                                    <button data-filter=".{{ category.slugCategory }}">{{ category.titleCategory }}</button>
+                                {% endfor %}
+                                <div class="active-bg"></div>
+                            </div>
+                        </div>
+
+                        <div class="portfolio-box wow fadeInUp" data-wow-delay=".6s">
+                            <div class="portfolio-sizer"></div>
+                            <div class="gutter-sizer"></div>
+
+                            {% for worck in worck_site %}
+
+                                <div class="portfolio-item {% for category in worck.categoryWorckInfo.all %}{{ category.slugCategory }}{% endfor %} {{ forloop.counter }}">
+                                    <div class="image-box">
+                                        <img src="{{ worck.imgWorck_thumb.url }}" alt="{{ worck.titleWorck }}">
+                                    </div>
+                                    <div class="content-box">
+                                        <h3 class="portfolio-title">{{ worck.titleWorck }}</h3>
+                                        <p>{{ worck.exeptWorck|truncatechars:250 }}</p>
+                                        <i class="flaticon-up-right-arrow"></i>
+                                        <button data-mfp-src="#portfolio-wrapper-{{ forloop.counter }}" class="portfolio-link modal-popup"></button>
+                                    </div>
+                                </div>
+
+
+                            <div id="portfolio-wrapper-{{ forloop.counter }}" class="popup_content_area zoom-anim-dialog mfp-hide">
+                                <div class="popup_modal_img">
+                                    <img src="{{ worck.imgWorck_large.url }}" alt="{{ worck.titleWorck }}">
+                                </div>
+
+                                <div class="popup_modal_content">
+                                    <div class="portfolio_info">
+                                        <div class="portfolio_info_text">
+                                            <h2 class="title">{{ worck.titleWorck }}</h2>
+                                            <div class="desc">
+                                                <p>{{ worck.exeptWorck }}</p>
+                                            </div>
+                                            <a href="{{ worck.linkWorck }}" class="btn tj-btn-primary">Перейти <i class="fal fa-arrow-right"></i></a>
+                                        </div>
+                                        <div class="portfolio_info_items">
+                                            <div class="info_item">
+                                                <div class="key">Категория</div>
+                                                <div class="value">Web Design</div>
+                                            </div>
+                                            <div class="info_item">
+                                                <div class="key">Клиент</div>
+                                                <div class="value">{{ worck.clientWorck }}</div>
+                                            </div>
+                                            <div class="info_item">
+                                                <div class="key">Дата начала работы</div>
+                                                <div class="value">{{ worck.dateWorck }}</div>
+                                            </div>
+                                            <div class="info_item">
+                                                <div class="key">Дата окончания работы</div>
+                                                <div class="value">{{ worck.date_old_Worck }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="portfolio_gallery owl-carousel">
+                                        {% for img in worck.gallery_images.all %}
+                                            <div class="gallery_item">
+                                               <a href="{{ img.gallery_img_Worck.url }}" data-fancybox="gallery">
+                                                    <img src="{{ img.gallery_img_Worck.url }}" alt="">
+                                               </a>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+
+                                    <div class="portfolio_description">
+                                        <h2 class="title">{{ worck.desk_title_Worck }}</h2>
+                                        <div class="desc">
+                                            {{ worck.contentWorck|safe }}
+                                        </div>
+                                    </div>
+
+                                    <div class="portfolio_story_approach">
+                                        <div class="portfolio_story">
+                                            <div class="story_title">
+                                                <h4 class="title">История проекта</h4>
+                                            </div>
+                                            <div class="story_content">
+                                                <p>{{ worck.storyWorck }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="portfolio_approach">
+                                            <div class="approach_title">
+                                                <h4 class="title">Чего добились</h4>
+                                            </div>
+                                            <div class="approach_content">
+                                                <p>{{ worck.approachWorck }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section> -->
+        <!-- PORTFOLIO SECTION END -->
+
+
+
+        <!-- RESUME SECTION START -->
+        <section class="resume-section" id="resume-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="section-header wow fadeInUp" data-wow-delay=".3s">
+                            <h2 class="section-title">Мой опыт</h2>
+                        </div>
+
+                        <div class="resume-widget">
+
+                            {% for experience in experience_settings %}
+
+                                <div class="resume-item wow fadeInLeft" data-wow-delay=".4s">
+                                    <div class="time">
+                                        {{ experience.yearExperience }} - {% if experience.year_old_Experience %} {{ experience.year_old_Experience }} {% else %} Продолжаю работать {% endif %}
+                                    </div>
+                                    <h3 class="resume-title">{{ experience.postExperience }}</h3>
+                                    <div class="institute">
+                                        {{ experience.textExperience }}
+                                    </div>
+                                </div>
+
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- RESUME SECTION END -->
+
+        <!-- SKILLS SECTION START -->
+        <section class="skills-section" id="skills-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="section-header text-center">
+                            <h2 class="section-title wow fadeInUp" data-wow-delay=".3s">Мои Навыки</h2>
+                            <p class=" wow fadeInUp" data-wow-delay=".4s">Я помогу вам воплотить ваши идеи и желания в уникальный веб-проект, который вдохновляет вас и ваших клиентов.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="skills-widget d-flex flex-wrap justify-content-center align-items-center">
+
+                            {% for skills in skills_settings %}
+
+                                <div class="skill-item wow fadeInUp" data-wow-delay=".3s">
+                                    <div class="skill-inner">
+                                        <div class="icon-box">
+                                            <img src="{{ skills.imgSkills.url }}" alt="{{ skills.titleSkills }}">
+                                        </div>
+                                        <div class="number">{{ skills.countSkills }}%</div>
+                                    </div>
+                                    <p>{{ skills.titleSkills }}</p>
+                                </div>
+
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- SKILLS SECTION END -->
+
+        <!-- BLOG SECTION STAR -->
+        <section class="blog-section" id="blog-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="section-header text-center">
+                            <h2 class="section-title wow fadeInUp" data-wow-delay=".3s">Мой блог</h2>
+                            <p class=" wow fadeInUp" data-wow-delay=".4s">Новости о моей работе, жизни и не только</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+                    {% for news in news_home %}
+                        <div class="col-lg-4 col-md-6">
+                            <div class="blog-item wow fadeInUp" data-wow-delay=".5s">
+                                <div class="blog-thumb">
+                                    <a href="{% url 'news_detail' category_slug=news.category.first.slagCategory slug=news.slugnews %}">
+                                        <img src="{{ news.imgnews.url }}" alt="">
+                                    </a>
+                                    {% for category in news.category.all %}
+                                        <a href="{% url 'news_category' category_slug=category.slagCategory %}" class="category">{{ category.titleCategory }}</a>
+                                    {% endfor %}
+                                </div>
+
+                                <div class="blog-content">
+                                    <div class="blog-meta">
+                                        <ul class="ul-reset">
+                                            <li><i class="fa-light fa-calendar-days"></i>{{ news.datanews }}</li>
+                                        </ul>
+                                    </div>
+                                    <h3 class="blog-title"><a href="{% url 'news_detail' category_slug=news.category.first.slagCategory slug=news.slugnews %}">{{ news.titlenews }}</a></h3>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+        </section>
+        <!-- BLOG SECTION END -->
+
+        <!-- CONTACT SECTION START -->
+        <section class="contact-section" id="contact-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-7 order-2 order-md-1">
+                        <div class="contact-form-box wow fadeInLeft" data-wow-delay=".3s">
+                            <div class="section-header">
+                                <h2 class="section-title">Остались вопросы?</h2>
+                                <p>Я отвечаю всем в течении одного дня. Вы можете написать мне и задать интересующий вопрос</p>
+                            </div>
+
+                            <div class="tj-contact-form">
+                                <form action="{% url 'forms_home' %}" method="POST">
+                                    {% csrf_token %}
+                                    <div class="row gx-3">
+                                        <div class="col-sm-6">
+                                            <div class="form_group">
+                                                <input type="text" name="nameFormsHome" id="nameFormsHome" value="{{ form.nameFormsHome.value|default_if_none:'' }}" placeholder="Имя"
+                                                    autocomplete="off">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form_group">
+                                                <input type="email" name="emailFormsHome" id="emailFormsHome" value="{{ form.emailFormsHome.value|default_if_none:'' }}" placeholder="Email"
+                                                    autocomplete="off">
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form_group">
+                                                <select name="callFormsHome" id="callFormsHome" class="tj-nice-select">
+                                                    <option value="" selected disabled>Выберите удобный вид связи</option>
+                                                    <option value="email" {% if form.callFormsHome.value == "email" %}selected{% endif %}>Email</option>
+                                                    <option value="whatsapp" {% if form.callFormsHome.value == "whatsapp" %}selected{% endif %}>WhatsApp</option>
+                                                    <option value="telegram" {% if form.callFormsHome.value == "telegram" %}selected{% endif %}>Telegram</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form_group">
+                                                <textarea name="massageFormsHome" id="massageFormsHome" value="{{ form.massageFormsHome.value|default_if_none:'' }}" placeholder="Сообщение"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form_btn">
+                                                <button type="submit" class="btn tj-btn-primary">Отправить</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-5 offset-lg-1 col-md-5  d-flex flex-wrap align-items-center  order-1 order-md-2">
+                        <div class="contact-info-list">
+                            <ul class="ul-reset">
+
+                                {% for contact in contact_settings %}
+
+                                    <li class="d-flex flex-wrap align-items-center position-relative wow fadeInRight"
+                                        data-wow-delay=".4s">
+                                        <div class="icon-box">
+                                            <i class="{{ contact.imgSontact }}"></i>
+                                        </div>
+                                        <div class="text-box">
+                                            <p>{{ contact.nameSontact }}</p>
+                                            {% if contact.linkSontact %}<a href="{{ contact.linkSontact }}">{{ contact.titleSontact }}</a>{% else %}<p>{{ contact.titleSontact }}</p>{% endif %}
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- CONTACT SECTION END -->
+    </main>
+{% endblock %}

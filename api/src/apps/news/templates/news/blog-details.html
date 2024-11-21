@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+  <main class="site-content" id="content">
+    <!-- START: Breadcrumb Area -->
+    <section class="breadcrumb_area" data-bg-image="./assets/img/breadcrumb/breadcrumb-bg.jpg" data-bg-color="#140C1C">
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <div class="breadcrumb_content d-flex flex-column align-items-center">
+              <h2 class="title wow fadeInUp" data-wow-delay=".3s">{{ news_info.titlenews }}</h2>
+              <div class="breadcrumb_navigation wow fadeInUp" data-wow-delay=".5s">
+                <span><a href="index.html">Главная</a></span>
+                <i class="far fa-long-arrow-right"></i>
+                <span class="current-item"><a href="{% url 'news_list' %}">Новости</a></span>
+                  <i class="far fa-long-arrow-right"></i>
+                <span class="current-item">{{ news_info.titlenews }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- END: Breadcrumb Area -->
+
+    <!-- START: Blog Section -->
+    <section class="full-width tj-post-details__area">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div class="tj-post-details__container">
+              <article class="tj-single__post">
+                <div class="tj-post__thumb">
+                  <img src="{{ news_info.imgnews.url }}" alt="{{ news_info.titlenews }}">
+                    {% if news_info.category.exists %}
+                        {% with category=news_info.category.first %}
+                            <a href="{% url 'news_category' category_slug=category.slagCategory %}" class="category">{{ category.titleCategory }}</a>
+                        {% endwith %}
+                    {% endif %}
+
+                </div>
+
+                <div class="tj-post__content">
+                  <div class="tj-post__meta entry-meta">
+                    <span><i class="fa-light fa-calendar-days"></i>{{ news_info.datanews }}</span>
+                  </div>
+                  <div class="tj-post__content">
+                   {{ news_info.contentnews|safe }}
+                  </div>
+                    <div class="portfolio_gallery owl-carousel">
+                     {% for img in foto.all %}
+                      <div class="gallery_item">
+                       <a href="{{ img.imgnews.url }}" data-fancybox="gallery">
+                         <img src="{{ img.imgnews.url }}" alt="">
+                       </a>
+                    </div>
+                    {% endfor %}
+                    </div>
+
+                </div>
+              </article>
+
+              <!-- post tags & social share -->
+              <div class="single-post_tag_share ">
+                <!-- post tags -->
+                <div class="tj_tag">
+                  <h4 class="tag__title">Теги записи: </h4>
+                  <div class="tagcloud">
+                    {% for tag in related_tags %}
+                        <a href="{% url 'news_tag_detail' tag_slug=tag.slagTag %}">{{ tag.titleTag }}</a>
+                    {% endfor %}
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- comments area -->
+              <div class="tj-comments__container">
+
+                <div class="comment-respond">
+                  <h3 class="comment-reply-title">
+                    <span class="tj-comment__title">Написать комментарий</span>
+                  </h3>
+
+                  <form method="post" action="{% url 'feedback' %}" class="tj-post-comment__form">
+                      <p class="comment-notes">
+                          <span id="email-notes">Вы можете оставить комментарий автору статьи</span>
+                          <span class="required-field-message">Обязательные поля помечены <span class="required">*</span></span>
+                      </p>
+                      {% csrf_token %}
+                      <div class="row">
+                          <div class="col-md-6">
+                              <div class="form_group">
+                                  <input placeholder="Ваше имя" id="nameComm" value="{{ form.nameComm.value|default_if_none:'' }}" name="nameComm" type="text" aria-required="true">
+                              </div>
+                          </div>
+                          <div class="col-md-6">
+                              <div class="form_group">
+                                  <input placeholder="Email" id="emailComm" name="emailComm" value="{{ form.emailComm.value|default_if_none:'' }}" type="email" aria-required="true">
+                              </div>
+                          </div>
+                      </div>
+
+                      <div class="row">
+                          <div class="col-md-12">
+                              <div class="form_group">
+                                  <textarea class="msg-box" placeholder="Напишите сообщение" value="{{ form.textComm.value|default_if_none:'' }}" id="textComm" name="textComm" cols="45" rows="8"></textarea>
+                              </div>
+                          </div>
+                          <div class="clearfix"></div>
+                      </div>
+                      <button class="tj-btn-primary submit" type="submit">Отправить</button>
+                  </form>
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+    <!-- END: Blog Section -->
+  </main>
+
+{% endblock %}

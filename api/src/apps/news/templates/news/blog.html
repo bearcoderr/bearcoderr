@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+  <main class="site-content" id="content">
+
+    <!-- START: Breadcrumb Area -->
+    <section class="breadcrumb_area" data-bg-image="./assets/img/breadcrumb/breadcrumb-bg.jpg" data-bg-color="#140C1C">
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <div class="breadcrumb_content d-flex flex-column align-items-center">
+              <h2 class="title wow fadeInUp" data-wow-delay=".3s">Новости и статьи</h2>
+              <div class="breadcrumb_navigation wow fadeInUp" data-wow-delay=".5s">
+                <span><a href="{% url 'home' %}">Главная</a></span>
+                <i class="far fa-long-arrow-right"></i>
+                <span class="current-item">Новости</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- END: Breadcrumb Area -->
+
+    <!-- START: Blog Section -->
+    <section class="full-width tj-posts__area">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div class="tj-post__container">
+              {% for news in news_list %}
+              <article class="tj-post wow fadeInUp" data-wow-delay=".3s">
+                <div class="tj-post__thumb">
+                  <a href="{% url 'news_detail' category_slug=news.category.first.slagCategory slug=news.slugnews %}">
+                    <img src="{{ news.imgnews.url }}" alt="">
+                  </a>
+
+                  {% for category in news.category.all %}
+                    <a href="{% url 'news_category' category_slug=category.slagCategory %}" class="category">{{ category.titleCategory }}</a>
+                  {% endfor %}
+                </div>
+                <div class="tj-post__content">
+                  <div class="tj-post__meta entry-meta">
+                    <span><i class="fa-light fa-calendar-days"></i>{{ news.datanews }}</span>
+<!--                    <span><i class="fa-light fa-comments"></i><a href="#">Comments (3)</a></span>-->
+                  </div>
+                  <h3 class="tj-post__title entry-title">
+                    <a href="{% url 'news_detail' category_slug=news.category.first.slagCategory slug=news.slugnews %}">{{ news.titlenews }}</a>
+                  </h3>
+                  <div class="tj-post__excerpt">
+                    <p>{{ news.contentnews|truncatechars:250|safe }} ...</p>
+                  </div>
+                  <div class="tj-post__btn">
+                    <a href="{% url 'news_detail' category_slug=news.category.first.slagCategory slug=news.slugnews %}" class="tj-btn-primary">Читать далее</a>
+                  </div>
+                </div>
+              </article>
+              {% endfor %}
+
+
+              <div class="tj__pagination wow fadeInUp" data-wow-delay=".3s">
+                <ul>
+                    {% if news_list.has_previous %}
+                        <li><a class="page-numbers" href="?page={{ news_list.previous_page_number }}"><i class="fal fa-arrow-left"></i></a></li>
+                    {% else %}
+                        <li><span class="page-numbers disabled"><i class="fal fa-arrow-left"></i></span></li>
+                    {% endif %}
+
+                    {% for i in news_list.paginator.page_range %}
+                        {% if news_list.number == i %}
+                            <li><span class="page-numbers current">{{ i }}</span></li>
+                        {% else %}
+                            <li><a class="page-numbers" href="?page={{ i }}">{{ i }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if news_list.has_next %}
+                        <li><a class="page-numbers" href="?page={{ news_list.next_page_number }}"><i class="fal fa-arrow-right"></i></a></li>
+                    {% else %}
+                        <li><span class="page-numbers disabled"><i class="fal fa-arrow-right"></i></span></li>
+                    {% endif %}
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="tj_main_sidebar">
+              <div class="sidebar_widget widget_search wow fadeInUp" data-wow-delay=".3s">
+                <div class="tj-widget__search form_group">
+                  <form class="search-form" action="{% url 'search_results' %}" method="get">
+                    <input type="search" id="search" name="q" placeholder="Искать по названию...">
+                    <button class="search-btn" type="submit"> <i class="fa-light fa-magnifying-glass"></i> </button>
+                  </form>
+                </div>
+              </div>
+
+              <div class="sidebar_widget widget_categories wow fadeInUp" data-wow-delay=".3s">
+                <div class="widget_title">
+                  <h3 class="title">Категории</h3>
+                </div>
+
+                <ul>
+                  {% for category_list in category %}
+                    <li><a href="{% url 'news_category' category_slug=category_list.slagCategory %}">{{ category_list.titleCategory }}</a></li>
+                  {% endfor %}
+                </ul>
+              </div>
+
+              <div class="sidebar_widget tj_recent_posts wow fadeInUp" data-wow-delay=".3s">
+                <div class="widget_title">
+                  <h3 class="title">Последние новости</h3>
+                </div>
+
+                <ul>
+
+                  {% for news_recent in news_list_recent %}
+                      <li>
+                        <div class="recent-post_thumb">
+                          <a href="{% url 'news_detail' category_slug=news_recent.category.first.slagCategory slug=news_recent.slugnews %}">
+                            <img src="{{ news_recent.imgnews.url }}" alt="{{ news_recent.titlenews }}">
+                          </a>
+                        </div>
+
+                        <div class="recent-post_content">
+                          <div class="tj-post__meta entry-meta">
+                            <span><i class="fa-light fa-calendar-days"></i>{{ news_recent.datanews }}</span>
+<!--                            <span><i class="fa-light fa-comments"></i><a href="#"> (3)</a></span>-->
+                          </div>
+                          <h4 class="recent-post_title">
+                            <a href="{% url 'news_detail' category_slug=news_recent.category.first.slagCategory slug=news_recent.slugnews %}">{{ news_recent.titlenews }}</a>
+                          </h4>
+                        </div>
+                      </li>
+                  {% endfor %}
+                </ul>
+              </div>
+
+              <div class="sidebar_widget widget_tag_cloud wow fadeInUp" data-wow-delay=".3s">
+                <div class="widget_title">
+                  <h3 class="title">Популярные теги</h3>
+                </div>
+
+                <div class="tagcloud">
+                    {% for tag in news_list_tag %}
+                        <a href="{% url 'news_tag_detail' tag_slug=tag.slagTag %}">{{ tag.titleTag }}</a>
+                    {% endfor %}
+                </div>
+
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- END: Blog Section -->
+  </main>
+
+{% endblock %}

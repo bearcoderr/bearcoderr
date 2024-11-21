@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+  <main class="site-content" id="content">
+
+    <!-- START: Breadcrumb Area -->
+    <section class="breadcrumb_area" data-bg-image="./assets/img/breadcrumb/breadcrumb-bg.jpg" data-bg-color="#140C1C">
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <div class="breadcrumb_content d-flex flex-column align-items-center">
+              <h2 class="title wow fadeInUp" data-wow-delay=".3s">Поиск</h2>
+              <div class="breadcrumb_navigation wow fadeInUp" data-wow-delay=".5s">
+                <span><a href="{% url 'home' %}">Главная</a></span>
+                <i class="far fa-long-arrow-right"></i>
+                <span class="current-item">Поиск</span>
+              </div>
+              <div class="sidebar_widget widget_search wow fadeInUp w-80 mt-20" data-wow-delay=".3s">
+                <div class="tj-widget__search form_group">
+                  <form class="search-form" action="{% url 'search_results' %}" method="get">
+                    <input type="search" id="search" name="q" placeholder="Искать по названию...">
+                    <button class="search-btn" type="submit"><i class="fa-light fa-magnifying-glass"></i> </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- END: Breadcrumb Area -->
+
+    <!-- START: Blog Section -->
+    <section class="full-width tj-posts__area">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div class="tj-post__container">
+              {% if news_search %}
+              {% for news in news_search %}
+                <article class="tj-post wow fadeInUp" data-wow-delay=".3s">
+                  <div class="tj-post__thumb">
+                    <a href="{% url 'news_detail' category_slug=news.category.first.slagCategory slug=news.slugnews %}">
+                      <img src="{{ news.imgnews.url }}" alt="">
+                    </a>
+
+                    {% for category in news.category.all %}
+                      <a href="{% url 'news_category' category_slug=category.slagCategory %}" class="category">{{ category.titleCategory }}</a>
+                    {% endfor %}
+                  </div>
+                  <div class="tj-post__content">
+                    <div class="tj-post__meta entry-meta">
+                      <span><i class="fa-light fa-calendar-days"></i>{{ news.datanews }}</span>
+  <!--                    <span><i class="fa-light fa-comments"></i><a href="#">Comments (3)</a></span>-->
+                    </div>
+                    <h3 class="tj-post__title entry-title">
+                      <a href="{% url 'news_detail' category_slug=news.category.first.slagCategory slug=news.slugnews %}">{{ news.titlenews }}</a>
+                    </h3>
+                    <div class="tj-post__excerpt">
+                      <p>{{ news.contentnews|truncatechars:250|safe }} ...</p>
+                    </div>
+                    <div class="tj-post__btn">
+                      <a href="{% url 'news_detail' category_slug=news.category.first.slagCategory slug=news.slugnews %}" class="tj-btn-primary">Читать далее</a>
+                    </div>
+                  </div>
+                </article>
+              {% endfor %}
+              {% else %}
+                <h3>По вашему запросу, ничего не найдено!</h3>
+              {% endif %}
+            </div>
+          </div>
+      </div>
+    </section>
+    <!-- END: Blog Section -->
+  </main>
+
+{% endblock %}
