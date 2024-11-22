@@ -20,7 +20,7 @@
                             <h1 class="hero-title wow fadeInLeft" data-wow-delay="1.2s">{{ settings.titleHome }}</h1>
 
                             <div class="hero-image-box d-md-none text-center wow fadeInRight" data-wow-delay="1.3s">
-                                <img src="{{ settings.imgHome.url }}" alt="{{ settings.titleHome }}">
+                                <img src="{{ settings.titleHome.url }}" alt="{{ settings.titleHome }}">
                             </div>
 
                             <p class="lead wow fadeInLeft" data-wow-delay="1.4s">{{ settings.textHome }}</p>

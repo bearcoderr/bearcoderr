@@ -5,14 +5,15 @@
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="" />
+
     {% load static %}
     <!-- Site Title -->
-    <title>{{ titleHome }} | Программист на Python/Django</title>
+    <meta name="description" content="{{ page_description }}">
+    <title>{{ page_title }} | Ачкасов Алексей - Middle Backend Developer</title>
 
     <!-- Place favicon.ico in the root directory -->
-    <link rel="apple-touch-icon" href="{{ favSite.url }}" />
-    <link rel="shortcut icon" type="image/png" href="{{ favSite.url }}" />
+    <link rel="apple-touch-icon" href="{{ base_settings.favSite.url }}" />
+    <link rel="shortcut icon" type="image/png" href="{{ base_settings.favSite.url }}" />
 
     <!-- CSS here -->
     <link rel="stylesheet" href="{% static 'css/animate.min.css' %}">
@@ -66,27 +67,26 @@
 
                     <div class="logo-box">
                         <a href="">
-                            <img src="{{ favSite.url }}" alt="{{ titleHome }}">
+                            <img src="{{ base_settings.favSite.url }}" alt="{{ base_settings.titleHome }}">
                         </a>
                     </div>
 
                     <div class="header-info-list d-none d-md-inline-block">
-                        Программист на Python/Django
+                        {{ base_settings.titleHome }}
                     </div>
 
                     <div class="header-menu">
                         <nav>
                             <ul>
-                                <!--
-                                {% for link in menu_links %}
+                                {% for link in base_settings.menu_settings %}
                                     <li><a href="{{ link.link }}">{{ link.nameLink }}</a></li>
-                                {% endfor %}-->
+                                {% endfor %}
                             </ul>
                         </nav>
                     </div>
 
                     <div class="header-button">
-                        <a href="/#contact-section" class="btn tj-btn-primary">{{ button_header }}</a>
+                        <a href="/#contact-section" class="btn tj-btn-primary">{{ base_settings.buttonHeader }}</a>
                     </div>
 
                     <div class="menu-bar d-lg-none">
@@ -106,10 +106,10 @@
             <div class="row">
                 <div class="col-12 d-flex flex-wrap align-items-center">
 
-                    <div class="logo-box"><!--
+                    <div class="logo-box">
                         <a href="">
-                            <img src="{{ favSite.url }}" alt="{{ titleHome }}">
-                        </a>-->
+                            <img src="{{ base_settings.favSite.url }}" alt="{{ base_settings.titleHome }}">
+                        </a>
                     </div>
 
                     <div class="header-info-list d-none d-md-inline-block">
@@ -118,16 +118,16 @@
 
                     <div class="header-menu">
                         <nav>
-                            <ul><!--
-                                {% for link in menu_links %}
+                            <ul>
+                                {% for link in base_settings.menu_settings %}
                                     <li><a href="{{ link.link }}">{{ link.nameLink }}</a></li>
-                                {% endfor %}-->
+                                {% endfor %}
                             </ul>
                         </nav>
                     </div>
 
                     <div class="header-button">
-                        <a href="/#contact-section" class="btn tj-btn-primary">{{ button_header }}</a>
+                        <a href="/#contact-section" class="btn tj-btn-primary">{{ base_settings.buttonHeader }}</a>
                     </div>
 
                     <div class="menu-bar d-lg-none">
@@ -150,22 +150,22 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <div class="footer-logo-box"><!--
+                    <div class="footer-logo-box">
                         <a href="">
-                            <img src="{{ favSite.url }}" alt="{{ titleHome }}">
-                        </a>-->
+                            <img src="{{ base_settings.favSite.url }}" alt="{{ base_settings.titleHome }}">
+                        </a>
                     </div>
                     <div class="footer-menu">
                         <nav>
-                            <ul><!--
-                                {% for link in menu_links %}
+                            <ul>
+                                {% for link in base_settings.menu_settings %}
                                     <li><a href="{{ link.link }}">{{ link.nameLink }}</a></li>
-                                {% endfor %}-->
+                                {% endfor %}
                             </ul>
                         </nav>
                     </div>
                     <div class="copy-text">
-                        <p>{{ copy }}</p>
+                        <p>{{ base_settings.copyText }}</p>
                     </div>
                 </div>
             </div>

@@ -1,0 +1,19 @@
+from .services import BaseSettingsService
+from src.apps.settings.repository_base import BaseSettingsRepository
+def base_settings(request):
+    # Создаем экземпляр BaseSettingsService
+    base_settings_service = BaseSettingsService(repository=BaseSettingsRepository())
+
+    # Получаем настройки через сервис
+    base_settings = base_settings_service.get_settings()
+
+    # Определяем SEO данные для текущей страницы
+    page_title = getattr(request, 'page_title', 'Default Page Title')
+    page_description = getattr(request, 'page_description', 'Default page description.')
+
+    # Возвращаем данные в виде словаря, включая SEO данные
+    return {
+        'base_settings': base_settings,
+        'page_title': page_title,
+        'page_description': page_description,
+    }

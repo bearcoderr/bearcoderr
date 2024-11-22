@@ -5,32 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="31e9b336-e1ed-45cb-b187-3cf1b13a83b1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/bearcoderr.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/manage.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/apps/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/config/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/domain/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/models/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/models/apps.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/models/migrations/0001_initial.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/models/migrations/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/templates/base.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/validators/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/validators/compress_img.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/infrastructure/.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/infrastructure/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/infrastructure/docker-compose.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/poetry.lock" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/src/apps/settings/render_resume.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/src/apps/settings/repository.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/src/apps/settings/repository_base.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/src/domain/base_settings/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/src/domain/base_settings/context_processors.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/src/domain/base_settings/dto.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/src/domain/base_settings/repository_abs.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/src/domain/base_settings/services.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/src/domain/settings/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/src/domain/settings/dto.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/src/domain/settings/entity.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/src/domain/settings/repository_abs.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/src/domain/settings/services.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/apps/settings/templates/settings/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/apps/settings/templates/settings/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/apps/settings/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/apps/settings/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/apps/settings/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/apps/settings/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/config/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/templates/base.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,8 +38,25 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;bearcoderr&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/bearcoderr/bearcoderr.git&quot;,
+    &quot;accountId&quot;: &quot;06f51593-c52d-4e0a-bf31-6e62a98382b0&quot;
+  }
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
 }</component>
@@ -60,7 +70,7 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;com.codeium.enabled&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;develop&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/aleks/OneDrive/Рабочий стол/Django/bearcoderr/bearcoderr/api&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;terminal&quot;
   }
@@ -74,6 +84,7 @@
       <recent name="C:\Users\aleks\OneDrive\Рабочий стол\Django\bearcoderr\bearcoderr\api\src\domain" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\aleks\OneDrive\Рабочий стол\Django\bearcoderr\bearcoderr\api\src\domain\base_settings" />
       <recent name="C:\Users\aleks\OneDrive\Рабочий стол\Django\bearcoderr\bearcoderr\api\src\models" />
       <recent name="C:\Users\aleks\OneDrive\Рабочий стол\Django\bearcoderr\bearcoderr" />
       <recent name="C:\Users\aleks\OneDrive\Рабочий стол\Django\bearcoderr\bearcoderr\infrastructure" />
