@@ -109,21 +109,28 @@
 		},
 
 		getPositions: function() {
-			var self = this;
-			var linkHref;
-			var topPos;
-			var $target;
+            var self = this;
+            var linkHref;
+            var topPos;
+            var $target;
 
-			self.$nav.each(function() {
-				linkHref = self.getHash($(this));
-				$target = $('#' + linkHref);
+            self.$nav.each(function() {
+                // Получаем хеш ссылки
+                linkHref = self.getHash($(this));
 
-				if($target.length) {
-					topPos = $target.offset().top;
-					self.sections[linkHref] = Math.round(topPos);
-				}
-			});
-		},
+                // Если хеш не пустой, продолжаем
+                if (linkHref) {
+                    $target = $('#' + linkHref);
+
+                    // Если элемент с таким ID существует
+                    if ($target.length) {
+                        topPos = $target.offset().top;
+                        self.sections[linkHref] = Math.round(topPos);
+                    }
+                }
+            });
+        },
+
 
 		getSection: function(windowPos) {
 			var returnValue = null;

@@ -1,24 +1,37 @@
 from django.views.generic.base import View
-from src.models.gallery import GallerySite, Photo
-from django.shortcuts import render, get_object_or_404
-
-
-# Create your views here.
-
+from django.shortcuts import render
+from .repository import GalleryRepository
+from src.domain.gallery.services import GalleryServices
 
 class GalleryViews(View):
     def get(self, request):
-        gallerySet = GallerySite.objects.all()
-        return render (request, 'gallery/gallery.html', {
-            'gallerySet': gallerySet,
-        })
+
+        ##Сео настройки старницы##
+        request.page_title = 'Путешествия Лехи бродяги'
+        request.page_description = 'Это страница о моих путешествиях и открытиях. Я делюсь историями из поездок, случайными находками и приключениями. Если любишь нестандартные маршруты, тебе сюда!'
+
+        gallery_repository = GalleryRepository()
+        gallery_services = GalleryServices(gallery_repository)
+
+        context = {
+            'gallery': gallery_services.get_gallery_list()
+        }
+
+        return render(request, 'gallery/gallery.html', context)
 
 
 class DetailsGalleryViews(View):
     def get(self, request, slug):
-        galleryDetails = get_object_or_404(GallerySite, slugGallery=slug)
-        galleryPhoto = Photo.objects.all()
-        return render(request, 'gallery/gallery-details.html', {
-            'galleryDetails': galleryDetails,
-            'galleryPhoto': galleryPhoto,
-        })
+
+        gallery_repository = GalleryRepository()
+        gallery_services = GalleryServices(gallery_repository)
+
+        ##Сео настройки старницы##
+        request.page_title = gallery_services.get_gallery(slug).titleGallery
+        request.page_description = gallery_services.get_gallery(slug).contentGallery
+
+        context = {
+            'gallery': gallery_services.get_gallery(slug)
+        }
+
+        return render(request, 'gallery/gallery-details.html', context)

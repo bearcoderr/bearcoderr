@@ -8,6 +8,11 @@ services:
     env_file:
       - .env
     environment:
+      LANGUAGE_CODE: ${LANGUAGE_CODE}
+      TIME_ZONE: ${TIME_ZONE}
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      DEBUG: ${DEBUG}
+      DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS}
       DB_ENGINE: ${DB_ENGINE}
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}

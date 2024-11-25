@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+  <main class="site-content" id="content">
+
+    <!-- START: Breadcrumb Area -->
+    <section class="breadcrumb_area" data-bg-image="./assets/img/breadcrumb/breadcrumb-bg.jpg" data-bg-color="#140C1C">
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <div class="breadcrumb_content d-flex flex-column align-items-center">
+              <h2 class="title wow fadeInUp" data-wow-delay=".3s">{{ gallery.titleGallery }}</h2>
+              <div class="breadcrumb_navigation wow fadeInUp" data-wow-delay=".5s">
+                <span><a href="">Главная</a></span>
+                <i class="far fa-long-arrow-right"></i>
+                <span class="current-item"><a href="{% url 'gallery_list' %}">Путешествия</a></span>
+                <i class="far fa-long-arrow-right"></i>
+                <span class="current-item">{{ gallery.titleGallery }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- END: Breadcrumb Area -->
+
+    <!-- START: Blog Section -->
+    <section class="full-width tj-post-details__area">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div class="tj-post-details__container">
+              <article class="tj-single__post">
+
+                <div class="tj-post__content">
+                  <div class="tj-post__meta entry-meta">
+                    <span><i class="fa-light fa-calendar-days"></i> {{ gallery.dataGallery }}</span>
+                  </div>
+                    <div class="tj-post__content">
+                      {{ gallery.contentGallery|safe }}
+                    </div>
+
+                  <div class="tj-gallery">
+                    <div class="row">
+                      {% for photo in gallery.photos %}
+                        <div class="col-md-4">
+                          <a href="{{ photo.image_url }}" class="gallery-link" data-fancybox="gallery">
+                            <img src="{{ photo.image_url }}" class="gallery-image" alt="{{ photo.image_url }}">
+                          </a>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+
+
+
+                </div>
+              </article>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- END: Blog Section -->
+  </main>
+
+{% endblock %}

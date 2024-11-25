@@ -1353,6 +1353,10 @@ body.loaded {
 		var(--tj-theme-primary) 100%
 	);
 }
+.portfolio-box .content-box a {
+    color: var(--tj-white);
+    text-decoration: none;
+}
 .portfolio-box .portfolio-item:hover .content-box {
 	opacity: 1;
 	visibility: visible;

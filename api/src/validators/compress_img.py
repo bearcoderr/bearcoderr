@@ -3,34 +3,42 @@ from django.core.files import File
 from PIL import Image
 from io import BytesIO
 
+def compress_img(image, desired_width=None, desired_height=None):
+    """
+    Универсальная функция для сжатия и обрезки изображения.
 
-def compress_img(image):
+    :param image: Загружаемое изображение (File)
+    :param desired_width: Желаемая ширина изображения (int)
+    :param desired_height: Желаемая высота изображения (int)
+    :return: Обработанное изображение в формате File
+    """
     try:
         # Открываем изображение и получаем его размеры
         im = Image.open(image)
         width, height = im.size
 
-        # Проверяем, если одно измерение превышает 1000 пикселей
-        if width > 1000 or height > 1000:
-            # Вычисляем новые размеры с сохранением пропорций
-            aspect_ratio = width / height
-            if aspect_ratio > 1:
-                new_width = min(width, 1000)
-                new_height = int(new_width / aspect_ratio)
-            else:
-                new_height = min(height, 1000)
-                new_width = int(new_height * aspect_ratio)
+        # Если указана желаемая ширина
+        if desired_width is not None:
+            # Масштабируем изображение по ширине
+            new_width = desired_width
+            new_height = int((desired_width / width) * height)
+            im = im.resize((new_width, new_height), Image.LANCZOS)
 
-            # Масштабируем изображение до новых размеров
-            im = im.resize((new_width, new_height))
+        # Если указана желаемая высота, обрезаем изображение по высоте
+        if desired_height is not None:
+            if new_height > desired_height:
+                # Обрезаем сверху и снизу
+                top = (new_height - desired_height) // 2
+                bottom = top + desired_height
+                im = im.crop((0, top, new_width, bottom))
 
         # Сохраняем изображение в формате WEBP
         im_bytes = BytesIO()
-        im.save(im_bytes, format="WEBP", quality=100)
+        im.save(im_bytes, format="WEBP", quality=85)
 
         # Создаем ContentFile и File для сохранения в модели Django
         image_content_file = ContentFile(im_bytes.getvalue())
-        name = image.name.split('.')[0] + f'_{new_width}x{new_height}.webp'
+        name = image.name.split('.')[0] + f'_{desired_width}x{desired_height}.webp'
         new_image = File(image_content_file, name=name)
         return new_image
 

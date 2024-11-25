@@ -33,22 +33,22 @@
                             <div class="portfolio-sizer"></div>
                             <div class="gutter-sizer"></div>
 
-                            {% for gallery in gallerySet %}
+                            {% for gallery_item in gallery %}
 
                                 <div class="portfolio-item">
-                                    <a href="{% url 'gallery_detail' slug=gallery.slugGallery %}">
+                                    <a href="{% url 'gallery_detail' slug=gallery_item.slugGallery %}">
                                     <div class="image-box">
-                                        {% if gallery.photos.exists %}
-                                            {% with gallery.photos.first.image.url as first_image_url %}
-                                                <img src="{{ first_image_url }}" alt="{{ gallery.titleGallery }}">
-                                            {% endwith %}
+                                        {% if gallery_item.photos %}
+                                            <div class="image-box">
+                                                <img src="{{ gallery_item.photos.0.image_url }}" alt="{{ gallery_item.titleGallery }}">
+                                            </div>
                                         {% endif %}
                                     </div>
                                     <div class="content-box">
-                                        <h3 class="portfolio-title">{{ gallery.titleGallery }}</h3>
-                                        <p>{{ gallery.exeptGallery|truncatechars:250 }}</p>
+                                        <h3 class="portfolio-title">{{ gallery_item.titleGallery }}</h3>
+                                        <p>{{ gallery_item.contentGallery|truncatechars:150|safe }}</p>
                                         <i class="flaticon-up-right-arrow"></i>
-                                        <a href="#" class="portfolio-link modal-popup"></a>
+                                        <a href="{% url 'gallery_detail' slug=gallery_item.slugGallery %}" class="portfolio-link modal-popup"></a>
                                     </div>
                                         </a>
                                 </div>

@@ -1,0 +1,14 @@
+from src.models.services import ServicesSite
+from src.domain.services.repository_abs import ServicesRepositoryAbs
+from src.domain.services.dto import ServicesDTO
+
+
+class ServicesRepository(ServicesRepositoryAbs):
+    def get_services(self) -> ServicesDTO:
+        services = ServicesSite.objects.all()
+        return ServicesDTO(
+            imgServices=services.imgServices,
+            titleServices=services.titleServices,
+            exeptServices=services.exeptServices,
+            contentServices=services.contentServices,
+        )

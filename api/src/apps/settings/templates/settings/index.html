@@ -74,16 +74,16 @@
                     <div class="col-md-12">
                         <div class="services-widget position-relative">
 
-                            {% for services in services_site %}
+                            {% for services_item in services %}
 
 
                                 <div class="service-item current d-flex flex-wrap align-items-center wow fadeInUp" data-wow-delay=".5s">
                                     <div class="left-box d-flex flex-wrap align-items-center">
                                         <span class="number">{{ forloop.counter }}</span>
-                                        <h3 class="service-title">{{ services.titleServices }}</h3>
+                                        <h3 class="service-title">{{ services_item.titleServices }}</h3>
                                     </div>
                                     <div class="right-box">
-                                        <p>{{ services.exeptServices|truncatechars:250 }}</p>
+                                        <p>{{ services_item.exeptServices|truncatechars:250 }}</p>
                                     </div>
                                     <i class="flaticon-up-right-arrow"></i>
                                     <button data-mfp-src="#service-wrapper-{{ forloop.counter }}" class="service-link modal-popup"></button>
@@ -92,7 +92,7 @@
                             <!-- start: Service Popup -->
                                 <div id="service-wrapper-{{ forloop.counter }}" class="popup_content_area zoom-anim-dialog mfp-hide">
                                     <div class="popup_modal_img">
-                                        <img src="{{ services.imgServices.url }}" alt="{{ services.titleServices }}">
+                                        <img src="{{ services_item.imgServices.url }}" alt="{{ services_item.titleServices }}">
                                     </div>
                                     <div class="popup_modal_content">
                                         <div class="service_details">
@@ -100,9 +100,9 @@
                                                 <div class="col-lg-12">
                                                     <div class="service_details_content">
                                                         <div class="service_info">
-                                                            <h2 class="title">{{ services.titleServices }}</h2>
+                                                            <h2 class="title">{{ services_item.titleServices }}</h2>
                                                             <div class="cont">
-                                                                {{ services.contentServices | safe }}
+                                                                {{ services_item.contentServices | safe }}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -254,7 +254,6 @@
         <!-- PORTFOLIO SECTION END -->
 
 
-
         <!-- RESUME SECTION START -->
         <section class="resume-section" id="resume-section">
             <div class="container">
@@ -333,15 +332,15 @@
                 </div>
                 <div class="row">
 
-                    {% for news in news_home %}
+                    {% for news in news_list %}
                         <div class="col-lg-4 col-md-6">
                             <div class="blog-item wow fadeInUp" data-wow-delay=".5s">
                                 <div class="blog-thumb">
-                                    <a href="{% url 'news_detail' category_slug=news.category.first.slagCategory slug=news.slugnews %}">
-                                        <img src="{{ news.imgnews.url }}" alt="">
+                                    <a href="">
+                                        <img src="{{ news.imgnews }}" alt="{{ news.titlenews }}">
                                     </a>
-                                    {% for category in news.category.all %}
-                                        <a href="{% url 'news_category' category_slug=category.slagCategory %}" class="category">{{ category.titleCategory }}</a>
+                                    {% for category in news.category %}
+                                        <a href="" class="category">{{ category.titleCategory }}</a>
                                     {% endfor %}
                                 </div>
 
@@ -351,7 +350,7 @@
                                             <li><i class="fa-light fa-calendar-days"></i>{{ news.datanews }}</li>
                                         </ul>
                                     </div>
-                                    <h3 class="blog-title"><a href="{% url 'news_detail' category_slug=news.category.first.slagCategory slug=news.slugnews %}">{{ news.titlenews }}</a></h3>
+                                    <h3 class="blog-title"><a href="">{{ news.titlenews }}</a></h3>
                                 </div>
                             </div>
                         </div>

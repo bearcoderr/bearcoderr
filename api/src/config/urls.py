@@ -24,6 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('src.apps.settings.urls'), name='home'),
     path('gallery/', include('src.apps.gallery.urls'), name='gallery'),
+    path('news/', include('src.apps.news.urls'), name='news'),
 ]
 
 if settings.DEBUG:

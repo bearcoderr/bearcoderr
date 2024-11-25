@@ -11,13 +11,13 @@
         <div class="row">
           <div class="col">
             <div class="breadcrumb_content d-flex flex-column align-items-center">
-              <h2 class="title wow fadeInUp" data-wow-delay=".3s">{{ galleryDetails.titleGallery }}</h2>
+              <h2 class="title wow fadeInUp" data-wow-delay=".3s">{{ gallery.titleGallery }}</h2>
               <div class="breadcrumb_navigation wow fadeInUp" data-wow-delay=".5s">
                 <span><a href="">Главная</a></span>
                 <i class="far fa-long-arrow-right"></i>
-                <span class="current-item"><a href="{% url 'gallery_list' %}">Фотографии</a></span>
+                <span class="current-item"><a href="{% url 'gallery_list' %}">Путешествия</a></span>
                 <i class="far fa-long-arrow-right"></i>
-                <span class="current-item">{{ galleryDetails.titleGallery }}</span>
+                <span class="current-item">{{ gallery.titleGallery }}</span>
               </div>
             </div>
           </div>
@@ -36,21 +36,18 @@
 
                 <div class="tj-post__content">
                   <div class="tj-post__meta entry-meta">
-                    <span><i class="fa-light fa-calendar-days"></i> {{ galleryDetails.dataGallery }}</span>
+                    <span><i class="fa-light fa-calendar-days"></i> {{ gallery.dataGallery }}</span>
                   </div>
-                  {% if galleryDetails.contentGallery %}
                     <div class="tj-post__content">
-                      {{ galleryDetails.contentGallery|safe }}
+                      {{ gallery.contentGallery|safe }}
                     </div>
-                  {% else %}
-                  {% endif %}
 
                   <div class="tj-gallery">
                     <div class="row">
-                      {% for photo in galleryPhoto %}
+                      {% for photo in gallery.photos %}
                         <div class="col-md-4">
-                          <a href="{{ photo.image.url }}" class="gallery-link" data-fancybox="gallery">
-                            <img src="{{ photo.image.url }}" class="gallery-image" alt="">
+                          <a href="{{ photo.image_url }}" class="gallery-link" data-fancybox="gallery">
+                            <img src="{{ photo.image_url }}" class="gallery-image" alt="{{ photo.caption }}">
                           </a>
                         </div>
                       {% endfor %}
