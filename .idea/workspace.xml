@@ -5,41 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="31e9b336-e1ed-45cb-b187-3cf1b13a83b1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/api/src/apps/gallery/repository.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/apps/news/repository.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/apps/services/repository.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/domain/gallery/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/domain/gallery/dto.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/domain/gallery/repository_abs.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/domain/gallery/services.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/domain/news/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/domain/news/dto.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/domain/news/repository_abs.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/domain/news/services.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/domain/services/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/domain/services/dto.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/domain/services/repository_abs.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/domain/services/services.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/apps/gallery/templates/gallery/gallery-details.html" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/apps/gallery/templates/gallery/gallery-details.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/apps/gallery/templates/gallery/gallery.html" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/apps/gallery/templates/gallery/gallery.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/apps/gallery/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/apps/gallery/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/apps/news/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/apps/news/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/apps/news/repository.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/apps/news/repository.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/apps/news/templates/news/blog-details.html" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/apps/news/templates/news/blog-details.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/src/apps/news/templates/news/blog.html" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/apps/news/templates/news/blog.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/src/apps/news/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/apps/news/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/src/apps/news/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/apps/news/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/src/apps/settings/templates/settings/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/apps/settings/templates/settings/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/src/apps/settings/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/apps/settings/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/apps/worck/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/apps/worck/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/config/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/config/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/config/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/domain/news/dto.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/domain/news/dto.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/domain/news/repository_abs.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/domain/news/repository_abs.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/domain/news/services.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/domain/news/services.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/models/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/models/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/models/migrations/0011_alter_formsnews_options_remove_news_feetbicke_and_more.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/models/migrations/0011_alter_formsnews_options_remove_news_feetbicke_and_more.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/src/models/news.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/models/news.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/models/services.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/models/services.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/static/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/static/css/main.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/static/js/one-page-nav.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/static/js/one-page-nav.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/validators/compress_img.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/validators/compress_img.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/infrastructure/.env" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/infrastructure/docker-compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/docker-compose.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

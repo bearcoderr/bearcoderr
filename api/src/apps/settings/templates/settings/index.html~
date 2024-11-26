@@ -326,7 +326,7 @@
                     <div class="col-md-12">
                         <div class="section-header text-center">
                             <h2 class="section-title wow fadeInUp" data-wow-delay=".3s">Мой блог</h2>
-                            <p class=" wow fadeInUp" data-wow-delay=".4s">Новости о моей работе, жизни и не только</p>
+                            <p class=" wow fadeInUp" data-wow-delay=".4s">Блог о моей работе, жизни и не только</p>
                         </div>
                     </div>
                 </div>
@@ -336,12 +336,10 @@
                         <div class="col-lg-4 col-md-6">
                             <div class="blog-item wow fadeInUp" data-wow-delay=".5s">
                                 <div class="blog-thumb">
-                                    <a href="">
-                                        <img src="{{ news.imgnews.url }}" alt="">
+                                    <a href="{% url 'news_detail' category_slug=news.category.slagCategory news_slug=news.slugnews %}">
+                                        <img src="{{ news.imgnews }}" alt="{{ news.titlenews }}">
                                     </a>
-                                    {% for category in news.category %}
-                                        <a href="" class="category">{{ category.titleCategory }}</a>
-                                    {% endfor %}
+                                    <a href="{% url 'news_category_list' category_slug=news.category.slagCategory %}" class="category">{{ news.category.titleCategory }}</a>
                                 </div>
 
                                 <div class="blog-content">

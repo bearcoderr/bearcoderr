@@ -1,14 +1,73 @@
+from typing import List
+from django.db.models import Q
+from django.utils import timezone
+
 from src.models.news import news, newsCategory, newsTag
 from src.domain.news.repository_abs import NewsRepositoryAbs
 from src.domain.news.dto import NewsDTO, NewsCategoryDTO, NewsTagDTO
 
 class NewsRepository(NewsRepositoryAbs):
-    def get_news_list(self) -> list[NewsDTO]:
-        news_list = news.objects.prefetch_related('tags', 'category').all()
+
+
+    def get_news_list_category(self) -> List[NewsCategoryDTO]:
+        news_list = newsCategory.objects.all()
+        return [
+            NewsCategoryDTO(
+                titleCategory=cat.titleCategory,
+                slagCategory=cat.slagCategory,
+                contentCategory=cat.contentCategory
+            )
+            for cat in news_list
+        ]
+
+    def get_news_list_tag(self) -> List[NewsTagDTO]:
+        news_list = newsTag.objects.all()
+        return [
+            NewsTagDTO(
+                titleTag=tag.titleTag,
+                slagTag=tag.slagTag
+            )
+            for tag in news_list
+        ]
+
+    def get_popular_news(self) -> list[NewsDTO]:
+        popular_news = news.objects.order_by('-countView')[:3]
         return [
             NewsDTO(
                 imgnews=new.imgnews.url if new.imgnews else '',
                 titlenews=new.titlenews,
+                dataNews=new.dataNews,
+                slugnews=new.slugnews,
+                contentnews=new.contentnews[:200],  # Ограничиваем текст
+                tags=[
+                    NewsTagDTO(
+                        titleTag=tag.titleTag,
+                        slagTag=tag.slagTag
+                    ) for tag in new.tags.all()
+                ],
+                category=NewsCategoryDTO(
+                    titleCategory=new.category.titleCategory,
+                    slagCategory=new.category.slagCategory,
+                    contentCategory=new.category.contentCategory
+                ) if hasattr(new, 'category') else None
+            )
+            for new in popular_news
+        ]
+
+    def get_news_list(self) -> List[NewsDTO]:
+        # Получаем текущую дату
+        current_time = timezone.now()
+
+        # Фильтруем новости по дате публикации и учитываем пустые значения
+        news_list = news.objects.filter(
+            Q(published_at__lte=current_time) | Q(published_at__isnull=True)
+        ).prefetch_related('tags', 'category').order_by('-dataNews')
+
+        return [
+            NewsDTO(
+                imgnews=new.imgnews.url if new.imgnews and hasattr(new.imgnews, 'url') else '',
+                titlenews=new.titlenews,
+                dataNews=new.dataNews,
                 slugnews=new.slugnews,
                 contentnews=new.contentnews,
                 tags=[
@@ -16,24 +75,22 @@ class NewsRepository(NewsRepositoryAbs):
                         titleTag=tag.titleTag,
                         slagTag=tag.slagTag
                     ) for tag in new.tags.all()
-                ],
-                category=[
-                    NewsCategoryDTO(
-                        titleCategory=cat.titleCategory,
-                        slagCategory=cat.slagCategory,
-                    ) for cat in new.category.all()
-                ],
+                ] if new.tags.exists() else [],
+                category=NewsCategoryDTO(
+                    titleCategory=new.category.titleCategory,
+                    slagCategory=new.category.slagCategory,
+                    contentCategory=new.category.contentCategory
+                ) if new.category else None
             )
             for new in news_list
         ]
 
     def get_news_by_slug(self, slug: str) -> NewsDTO:
         new = news.objects.prefetch_related('tags', 'category').get(slugnews=slug)
-        # Допустим, берем первую категорию как основную
-        main_category = new.category.first()  # Получаем первую категорию, если она есть
         return NewsDTO(
-            imgnews=new.imgnews.url if new.imgnews else '',
+            imgnews=new.imgnews.url if new.imgnews and hasattr(new.imgnews, 'url') else '',
             titlenews=new.titlenews,
+            dataNews=new.dataNews,
             slugnews=new.slugnews,
             contentnews=new.contentnews,
             tags=[
@@ -42,12 +99,11 @@ class NewsRepository(NewsRepositoryAbs):
                     slagTag=tag.slagTag
                 ) for tag in new.tags.all()
             ],
-            category=[
-                NewsCategoryDTO(
-                    titleCategory=cat.titleCategory,
-                    slagCategory=cat.slagCategory  # Только одно поле slug
-                ) for cat in new.category.all()
-            ],
+            category=NewsCategoryDTO(
+                titleCategory=new.category.titleCategory,
+                slagCategory=new.category.slagCategory,
+                contentCategory=new.category.contentCategory
+            ) if hasattr(new, 'category') else None
         )
 
     def get_news_by_tag(self, tag: str) -> list[NewsDTO]:
@@ -56,6 +112,7 @@ class NewsRepository(NewsRepositoryAbs):
             NewsDTO(
                 imgnews=new.imgnews.url if new.imgnews else '',
                 titlenews=new.titlenews,
+                dataNews=new.dataNews,
                 slugnews=new.slugnews,
                 contentnews=new.contentnews,
                 tags=[
@@ -64,22 +121,23 @@ class NewsRepository(NewsRepositoryAbs):
                         slagTag=tag.slagTag
                     ) for tag in new.tags.all()
                 ],
-                category=[
-                    NewsCategoryDTO(
-                        titleCategory=cat.titleCategory,
-                        slagCategory=cat.slagCategory
-                    ) for cat in new.category.all()
-                ],
+                category=NewsCategoryDTO(
+                    titleCategory=new.category.titleCategory,
+                    slagCategory=new.category.slagCategory,
+                    contentCategory=new.category.contentCategory
+                ) if hasattr(new, 'category') else None
             )
             for new in news_list
         ]
 
-    def get_news_by_category(self, category: str) -> list[NewsDTO]:
-        news_list = news.objects.filter(category__slagCategory=category).prefetch_related('tags', 'category')
+    def get_news_by_category(self, category_slug: str) -> list[NewsDTO]:
+        category = newsCategory.objects.get(slagCategory=category_slug)
+        news_list = news.objects.filter(category=category).prefetch_related('tags', 'category')
         return [
             NewsDTO(
                 imgnews=new.imgnews.url if new.imgnews else '',
                 titlenews=new.titlenews,
+                dataNews=new.dataNews,
                 slugnews=new.slugnews,
                 contentnews=new.contentnews,
                 tags=[
@@ -88,12 +146,11 @@ class NewsRepository(NewsRepositoryAbs):
                         slagTag=tag.slagTag
                     ) for tag in new.tags.all()
                 ],
-                category=[
-                    NewsCategoryDTO(
-                        titleCategory=cat.titleCategory,
-                        slagCategory=cat.slagCategory
-                    ) for cat in new.category.all()
-                ],
+                category=NewsCategoryDTO(
+                    titleCategory=category.titleCategory,
+                    slagCategory=category.slagCategory,
+                    contentCategory=category.contentCategory
+                ),
             )
             for new in news_list
         ]
@@ -104,6 +161,7 @@ class NewsRepository(NewsRepositoryAbs):
             NewsDTO(
                 imgnews=new.imgnews.url if new.imgnews else '',
                 titlenews=new.titlenews,
+                dataNews=new.dataNews,
                 slugnews=new.slugnews,
                 contentnews=new.contentnews,
                 tags=[

@@ -221,7 +221,7 @@ class Migration(migrations.Migration):
                 ('datanews', models.DateTimeField(default=django.utils.timezone.now, verbose_name='Дата публиации')),
                 ('titlenews', models.CharField(max_length=500, verbose_name='Название статьи')),
                 ('slugnews', models.SlugField(blank=True, max_length=200, null=True, unique=True, verbose_name='Заполняется автоматически')),
-                ('contentnews', ckeditor.fields.RichTextField(verbose_name='Контент новости')),
+                ('contentnews', ckeditor.fields.RichTextField(verbose_name='Контент Блог')),
                 ('feetbicke', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='models.formsnews', verbose_name='Отзыв')),
                 ('gallery', models.ManyToManyField(blank=True, to='models.gallerynews', verbose_name='Галерея фотографий')),
                 ('category', models.ManyToManyField(blank=True, to='models.newscategory', verbose_name='Категории статьи')),
@@ -229,7 +229,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'verbose_name': 'Новость',
-                'verbose_name_plural': 'Новости',
+                'verbose_name_plural': 'Блог',
             },
         ),
         migrations.CreateModel(

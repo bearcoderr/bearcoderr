@@ -13,7 +13,7 @@
               <div class="breadcrumb_navigation wow fadeInUp" data-wow-delay=".5s">
                 <span><a href="index.html">Главная</a></span>
                 <i class="far fa-long-arrow-right"></i>
-                <span class="current-item"><a href="{% url 'news_list' %}">Новости</a></span>
+                <span class="current-item"><a href="{% url 'news_list' %}">Блог</a></span>
                   <i class="far fa-long-arrow-right"></i>
                 <span class="current-item">{{ news_info.titlenews }}</span>
               </div>
@@ -32,13 +32,8 @@
             <div class="tj-post-details__container">
               <article class="tj-single__post">
                 <div class="tj-post__thumb">
-                  <img src="{{ news_info.imgnews.url }}" alt="{{ news_info.titlenews }}">
-                    {% if news_info.category.exists %}
-                        {% with category=news_info.category.first %}
-                            <a href="{% url 'news_category' category_slug=category.slagCategory %}" class="category">{{ category.titleCategory }}</a>
-                        {% endwith %}
-                    {% endif %}
-
+                  <img src="{{ news_info.imgnews }}" alt="{{ news_info.titlenews }}">
+                    <a href="{% url 'news_category_list' category_slug=news_info.category.slagCategory %}" class="category">{{ news_info.category.titleCategory }}</a>
                 </div>
 
                 <div class="tj-post__content">
@@ -48,15 +43,6 @@
                   <div class="tj-post__content">
                    {{ news_info.contentnews|safe }}
                   </div>
-                    <div class="portfolio_gallery owl-carousel">
-                     {% for img in foto.all %}
-                      <div class="gallery_item">
-                       <a href="{{ img.imgnews.url }}" data-fancybox="gallery">
-                         <img src="{{ img.imgnews.url }}" alt="">
-                       </a>
-                    </div>
-                    {% endfor %}
-                    </div>
 
                 </div>
               </article>
@@ -67,12 +53,11 @@
                 <div class="tj_tag">
                   <h4 class="tag__title">Теги записи: </h4>
                   <div class="tagcloud">
-                    {% for tag in related_tags %}
-                        <a href="{% url 'news_tag_detail' tag_slug=tag.slagTag %}">{{ tag.titleTag }}</a>
+                    {% for tag in news_info.tags %}
+                        <a href="">{{ tag.titleTag }}</a>
                     {% endfor %}
                   </div>
                 </div>
-
 
               </div>
 
@@ -84,7 +69,7 @@
                     <span class="tj-comment__title">Написать комментарий</span>
                   </h3>
 
-                  <form method="post" action="{% url 'feedback' %}" class="tj-post-comment__form">
+                  <form method="post" action="" class="tj-post-comment__form">
                       <p class="comment-notes">
                           <span id="email-notes">Вы можете оставить комментарий автору статьи</span>
                           <span class="required-field-message">Обязательные поля помечены <span class="required">*</span></span>

@@ -11,6 +11,7 @@ class NewsTagDTO:
 class NewsCategoryDTO:
     titleCategory: str
     slagCategory: str
+    contentCategory: str
 
 @dataclass
 class FormsnewsDTO:
@@ -22,8 +23,9 @@ class FormsnewsDTO:
 @dataclass
 class NewsDTO:
     imgnews: str
+    dataNews: str
     titlenews: str
     slugnews: str
     contentnews: str
     tags: List[NewsTagDTO]
-    category: List[NewsCategoryDTO]
+    category: NewsCategoryDTO

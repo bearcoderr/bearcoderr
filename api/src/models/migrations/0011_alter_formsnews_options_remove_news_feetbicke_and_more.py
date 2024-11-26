@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AlterModelOptions(
             name='formsnews',
-            options={'verbose_name': 'Комментарий к новости', 'verbose_name_plural': 'Комментарии к новостям'},
+            options={'verbose_name': 'Комментарий к Блог', 'verbose_name_plural': 'Комментарии к новостям'},
         ),
         migrations.RemoveField(
             model_name='news',

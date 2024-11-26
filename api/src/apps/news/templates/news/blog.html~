@@ -11,11 +11,11 @@
         <div class="row">
           <div class="col">
             <div class="breadcrumb_content d-flex flex-column align-items-center">
-              <h2 class="title wow fadeInUp" data-wow-delay=".3s">Новости и статьи</h2>
+              <h2 class="title wow fadeInUp" data-wow-delay=".3s">Блог и статьи</h2>
               <div class="breadcrumb_navigation wow fadeInUp" data-wow-delay=".5s">
                 <span><a href="{% url 'home' %}">Главная</a></span>
                 <i class="far fa-long-arrow-right"></i>
-                <span class="current-item">Новости</span>
+                <span class="current-item">Блог</span>
               </div>
             </div>
           </div>
@@ -31,59 +31,56 @@
           <div class="col-lg-8">
             <div class="tj-post__container">
               {% for news in news_list %}
-              {{ news.category }}
               <article class="tj-post wow fadeInUp" data-wow-delay=".3s">
                 <div class="tj-post__thumb">
-                  <a href="">
+                  <a href="{% url 'news_detail' category_slug=news.category.slagCategory news_slug=news.slugnews %}">
                     <img src="{{ news.imgnews }}" alt="{{ news.titlenews }}">
                   </a>
-
-                  {% for category in news.category %}
-                    <a href="" class="category">{{ category.titleCategory }}</a>
-                  {% endfor %}
+                  <a href="" class="category">{{ news.category.titleCategory }}</a>
                 </div>
                 <div class="tj-post__content">
                   <div class="tj-post__meta entry-meta">
-                    <span><i class="fa-light fa-calendar-days"></i>{{ news.datanews }}</span>
-<!--                    <span><i class="fa-light fa-comments"></i><a href="#">Comments (3)</a></span>-->
+                    <span><i class="fa-light fa-calendar-days"></i>{{ news.dataNews }}</span>
                   </div>
                   <h3 class="tj-post__title entry-title">
-                    <a href="">{{ news.titlenews }}</a>
+                    <a href="{% url 'news_detail' category_slug=news.category.slagCategory news_slug=news.slugnews %}">{{ news.titlenews }}</a>
                   </h3>
                   <div class="tj-post__excerpt">
                     <p>{{ news.contentnews|truncatechars:250|safe }} ...</p>
                   </div>
                   <div class="tj-post__btn">
-                    <a href="" class="tj-btn-primary">Читать далее</a>
+                    <a href="{% url 'news_detail' category_slug=news.category.slagCategory news_slug=news.slugnews %}" class="tj-btn-primary">Читать далее</a>
                   </div>
                 </div>
               </article>
               {% endfor %}
 
-
+              {% if news_list.has_other_pages %}
               <div class="tj__pagination wow fadeInUp" data-wow-delay=".3s">
-                <ul>
-                    {% if news_list.has_previous %}
-                        <li><a class="page-numbers" href="?page={{ news_list.previous_page_number }}"><i class="fal fa-arrow-left"></i></a></li>
-                    {% else %}
-                        <li><span class="page-numbers disabled"><i class="fal fa-arrow-left"></i></span></li>
-                    {% endif %}
+                  <ul>
+                      {% if news_list.has_previous %}
+                          <li><a class="page-numbers" href="?page={{ news_list.previous_page_number }}"><i class="fal fa-arrow-left"></i></a></li>
+                      {% else %}
+                          <li><span class="page-numbers disabled"><i class="fal fa-arrow-left"></i></span></li>
+                      {% endif %}
 
-                    {% for i in news_list.paginator.page_range %}
-                        {% if news_list.number == i %}
-                            <li><span class="page-numbers current">{{ i }}</span></li>
-                        {% else %}
-                            <li><a class="page-numbers" href="?page={{ i }}">{{ i }}</a></li>
-                        {% endif %}
-                    {% endfor %}
+                      {% for i in news_list.paginator.page_range %}
+                          {% if news_list.number == i %}
+                              <li><span class="page-numbers current">{{ i }}</span></li>
+                          {% elif i > news_list.number|add:'-3' and i < news_list.number|add:'3' %}
+                              <li><a class="page-numbers" href="?page={{ i }}">{{ i }}</a></li>
+                          {% endif %}
+                      {% endfor %}
 
-                    {% if news_list.has_next %}
-                        <li><a class="page-numbers" href="?page={{ news_list.next_page_number }}"><i class="fal fa-arrow-right"></i></a></li>
-                    {% else %}
-                        <li><span class="page-numbers disabled"><i class="fal fa-arrow-right"></i></span></li>
-                    {% endif %}
-                </ul>
+                      {% if news_list.has_next %}
+                          <li><a class="page-numbers" href="?page={{ news_list.next_page_number }}"><i class="fal fa-arrow-right"></i></a></li>
+                      {% else %}
+                          <li><span class="page-numbers disabled"><i class="fal fa-arrow-right"></i></span></li>
+                      {% endif %}
+                  </ul>
               </div>
+              {% endif %}
+
             </div>
           </div>
           <div class="col-lg-4">
@@ -103,24 +100,24 @@
                 </div>
 
                 <ul>
-                  {% for category_list in category %}
-                    <li><a href="{% url 'news_category' category_slug=category_list.slagCategory %}">{{ category_list.titleCategory }}</a></li>
+                  {% for category_list in categories %}
+                    <li><a href="{% url 'news_category_list' category_slug=category_list.slagCategory %}">{{ category_list.titleCategory }}</a></li>
                   {% endfor %}
                 </ul>
               </div>
 
               <div class="sidebar_widget tj_recent_posts wow fadeInUp" data-wow-delay=".3s">
                 <div class="widget_title">
-                  <h3 class="title">Последние новости</h3>
+                  <h3 class="title">Популярные записи</h3>
                 </div>
 
                 <ul>
 
-                  {% for news_recent in news_list_recent %}
+                  {% for news_recent in popular_news %}
                       <li>
                         <div class="recent-post_thumb">
-                          <a href="{% url 'news_detail' category_slug=news_recent.category.first.slagCategory slug=news_recent.slugnews %}">
-                            <img src="{{ news_recent.imgnews.url }}" alt="{{ news_recent.titlenews }}">
+                          <a href="{% url 'news_detail' category_slug=news_recent.category.slagCategory news_slug=news_recent.slugnews %}">
+                            <img src="{{ news_recent.imgnews }}" alt="{{ news_recent.titlenews }}">
                           </a>
                         </div>
 
@@ -130,7 +127,7 @@
 <!--                            <span><i class="fa-light fa-comments"></i><a href="#"> (3)</a></span>-->
                           </div>
                           <h4 class="recent-post_title">
-                            <a href="{% url 'news_detail' category_slug=news_recent.category.first.slagCategory slug=news_recent.slugnews %}">{{ news_recent.titlenews }}</a>
+                            <a href="{% url 'news_detail' category_slug=news_recent.category.slagCategory news_slug=news_recent.slugnews %}">{{ news_recent.titlenews }}</a>
                           </h4>
                         </div>
                       </li>
@@ -144,8 +141,8 @@
                 </div>
 
                 <div class="tagcloud">
-                    {% for tag in news_list_tag %}
-                        <a href="{% url 'news_tag_detail' tag_slug=tag.slagTag %}">{{ tag.titleTag }}</a>
+                    {% for tag in tags %}
+                        <a href="">{{ tag.titleTag }}</a>
                     {% endfor %}
                 </div>
 
