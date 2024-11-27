@@ -1,10 +1,10 @@
 from typing import List
 from django.db.models import Q
 from django.utils import timezone
-
-from src.models.news import news, newsCategory, newsTag
+from django.shortcuts import get_object_or_404
+from src.models.news import news, newsCategory, newsTag, Formsnews
 from src.domain.news.repository_abs import NewsRepositoryAbs
-from src.domain.news.dto import NewsDTO, NewsCategoryDTO, NewsTagDTO
+from src.domain.news.dto import NewsDTO, NewsCategoryDTO, NewsTagDTO, CommentDTO
 
 class NewsRepository(NewsRepositoryAbs):
 
@@ -34,6 +34,7 @@ class NewsRepository(NewsRepositoryAbs):
         popular_news = news.objects.order_by('-countView')[:3]
         return [
             NewsDTO(
+                post_id=new.id,
                 imgnews=new.imgnews.url if new.imgnews else '',
                 titlenews=new.titlenews,
                 dataNews=new.dataNews,
@@ -65,6 +66,7 @@ class NewsRepository(NewsRepositoryAbs):
 
         return [
             NewsDTO(
+                post_id=new.id,
                 imgnews=new.imgnews.url if new.imgnews and hasattr(new.imgnews, 'url') else '',
                 titlenews=new.titlenews,
                 dataNews=new.dataNews,
@@ -88,6 +90,7 @@ class NewsRepository(NewsRepositoryAbs):
     def get_news_by_slug(self, slug: str) -> NewsDTO:
         new = news.objects.prefetch_related('tags', 'category').get(slugnews=slug)
         return NewsDTO(
+            post_id=new.id,
             imgnews=new.imgnews.url if new.imgnews and hasattr(new.imgnews, 'url') else '',
             titlenews=new.titlenews,
             dataNews=new.dataNews,
@@ -110,6 +113,7 @@ class NewsRepository(NewsRepositoryAbs):
         news_list = news.objects.filter(tags__slagTag=tag).prefetch_related('tags', 'category')
         return [
             NewsDTO(
+                post_id=new.id,
                 imgnews=new.imgnews.url if new.imgnews else '',
                 titlenews=new.titlenews,
                 dataNews=new.dataNews,
@@ -135,6 +139,7 @@ class NewsRepository(NewsRepositoryAbs):
         news_list = news.objects.filter(category=category).prefetch_related('tags', 'category')
         return [
             NewsDTO(
+                post_id=new.id,
                 imgnews=new.imgnews.url if new.imgnews else '',
                 titlenews=new.titlenews,
                 dataNews=new.dataNews,
@@ -159,6 +164,7 @@ class NewsRepository(NewsRepositoryAbs):
         news_list = news.objects.filter(titlenews__icontains=search).prefetch_related('tags', 'category')
         return [
             NewsDTO(
+                post_id=new.id,
                 imgnews=new.imgnews.url if new.imgnews else '',
                 titlenews=new.titlenews,
                 dataNews=new.dataNews,
@@ -179,3 +185,23 @@ class NewsRepository(NewsRepositoryAbs):
             )
             for new in news_list
         ]
+
+    def post_comment(self, comment: CommentDTO) -> CommentDTO:
+        news_instance = get_object_or_404(news, pk=comment.post_id)
+
+        # Создаем объект `Formsnews`, передавая экземпляр `news`
+        form = Formsnews.objects.create(
+            nameComm=comment.nameComm,
+            emailComm=comment.emailComm,
+            textComm=comment.textComm,
+            post=news_instance
+        )
+
+        # Возвращаем DTO
+        return CommentDTO(
+            nameComm=form.nameComm,
+            emailComm=form.emailComm,
+            textComm=form.textComm,
+            time_create=form.time_create,
+            post_id=form.post.id
+        )

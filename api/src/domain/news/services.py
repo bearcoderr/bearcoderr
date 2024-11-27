@@ -1,5 +1,5 @@
 from .repository_abs import NewsRepositoryAbs
-from .dto import NewsDTO
+from .dto import NewsDTO, CommentDTO
 
 
 class NewsService(NewsRepositoryAbs):
@@ -30,3 +30,6 @@ class NewsService(NewsRepositoryAbs):
 
     def get_popular_news(self) -> list[NewsDTO]:
         return self.repository.get_popular_news()
+
+    def post_comment(self, comment: CommentDTO):
+        return self.repository.post_comment(comment)

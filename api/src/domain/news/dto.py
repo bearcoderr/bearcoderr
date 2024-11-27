@@ -22,6 +22,7 @@ class FormsnewsDTO:
 
 @dataclass
 class NewsDTO:
+    post_id: int
     imgnews: str
     dataNews: str
     titlenews: str
@@ -29,3 +30,12 @@ class NewsDTO:
     contentnews: str
     tags: List[NewsTagDTO]
     category: NewsCategoryDTO
+
+
+@dataclass
+class CommentDTO:
+    nameComm: str
+    emailComm: str
+    textComm: str
+    time_create: str
+    post_id: int

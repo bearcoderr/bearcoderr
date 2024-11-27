@@ -25,7 +25,7 @@
 
                             <p class="lead wow fadeInLeft" data-wow-delay="1.4s">{{ settings.textHome }}</p>
                             <div class="button-box d-flex flex-wrap align-items-center">
-                                <a href="" class="btn tj-btn-secondary wow fadeInLeft" data-wow-delay="1.5s">Скачать PDF</a>
+                                <a href="{% url 'resume' %}" class="btn tj-btn-secondary wow fadeInLeft" data-wow-delay="1.5s">Скачать PDF</a>
                                 
                                 <ul class="ul-reset social-icons wow fadeInLeft" data-wow-delay="1.6s">
                                     {% for social in settings.social_settings %}
@@ -371,7 +371,7 @@
                             </div>
 
                             <div class="tj-contact-form">
-                                <form action="" method="POST">
+                                <form action="{% url 'forms' %}" method="POST">
                                     {% csrf_token %}
                                     <div class="row gx-3">
                                         <div class="col-sm-6">

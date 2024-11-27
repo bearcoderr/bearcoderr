@@ -1,5 +1,5 @@
 import abc
-from .dto import NewsDTO
+from .dto import NewsDTO, CommentDTO
 
 class NewsRepositoryAbs(abc.ABC):
 
@@ -33,4 +33,8 @@ class NewsRepositoryAbs(abc.ABC):
 
     @abc.abstractmethod
     def get_popular_news(self) -> list[NewsDTO]:
+        pass
+
+    @abc.abstractmethod
+    def post_comment(self, comment: CommentDTO) -> CommentDTO:
         pass

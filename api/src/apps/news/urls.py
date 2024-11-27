@@ -7,5 +7,6 @@ urlpatterns = [
     path('feed/', NewsFeed(), name='news_feed'),
     path('<str:category_slug>/', NewsCategoryView.as_view(), name='news_category_list'),
     path('<str:category_slug>/<str:news_slug>/', NewsDetailsView.as_view(), name='news_detail'),
+    path('<str:category_slug>/<str:news_slug>/comment/', NewsDetailsView.as_view(), name='news_detail_comment'),
 
 ]

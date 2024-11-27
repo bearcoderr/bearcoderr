@@ -126,7 +126,7 @@ class Formsnews(models.Model):
     nameComm = models.CharField(max_length=500, verbose_name='Имя')
     emailComm = models.EmailField(max_length=500, verbose_name='Email')
     textComm = models.TextField(verbose_name='Сообщение')
-    time_create = models.DateTimeField(null=True, blank=True, verbose_name='Дата и время отправки')
+    time_create = models.DateTimeField(null=True, blank=True, verbose_name='Дата и время отправки', auto_now_add=True)
     post = models.ForeignKey(news, on_delete=models.CASCADE, verbose_name='Новость')
 
     class Meta:

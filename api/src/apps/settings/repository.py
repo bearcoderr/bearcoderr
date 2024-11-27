@@ -1,5 +1,5 @@
-from src.models.settings import Settings, socialSettings, numberSettings, experienceSettings, skillsSettings, contactSettings
-from src.domain.settings.dto import SettingsDTO, SocialSettingsDTO, numberSettingsDTO, ExperienceSettingsDTO, SkillsSettingsDTO, ContactSettingsDTO
+from src.models.settings import Settings, socialSettings, numberSettings, experienceSettings, skillsSettings, contactSettings, FormsHome
+from src.domain.settings.dto import SettingsDTO, SocialSettingsDTO, numberSettingsDTO, ExperienceSettingsDTO, SkillsSettingsDTO, ContactSettingsDTO, FormSettingsDTO
 from src.domain.settings.repository_abs import SettingsRepositoryAbs
 
 
@@ -81,4 +81,21 @@ class SettingsRepository(SettingsRepositoryAbs):
             experience_settings=experience_dtos,
             skills_settings=skills_dtos,
             contact_settings=contact_dtos
+        )
+
+
+    def post_fotms_settings(self, dto: FormSettingsDTO) -> FormSettingsDTO:
+        """Сохраняет данные в модель и возвращает DTO."""
+        form = FormsHome.objects.create(
+            nameFormsHome=dto.nameFormsHome,
+            emailFormsHome=dto.emailFormsHome,
+            callFormsHome=dto.callFormsHome,
+            massageFormsHome=dto.massageFormsHome,
+        )
+        # Возвращаем DTO
+        return FormSettingsDTO(
+            nameFormsHome=form.nameFormsHome,
+            emailFormsHome=form.emailFormsHome,
+            callFormsHome=form.callFormsHome,
+            massageFormsHome=form.massageFormsHome,
         )

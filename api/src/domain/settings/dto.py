@@ -50,3 +50,11 @@ class SettingsDTO:
     contact_settings: list[ContactSettingsDTO] = None
 
 
+
+
+@dataclass
+class FormSettingsDTO:
+    nameFormsHome: str
+    emailFormsHome: str
+    callFormsHome: str
+    massageFormsHome: str

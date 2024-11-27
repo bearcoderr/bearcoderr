@@ -27,11 +27,41 @@
                     <div class="col-md-12">
                         <div class="section-header text-center">
                             <h2 class="section-title wow fadeInUp" data-wow-delay=".3s">Спасибо за ваш вопрос!</h2>
-                            <p class=" wow fadeInUp" data-wow-delay=".4s">Я свяжусь с вами в течении дня!</p>
+                            <p class="wow fadeInUp" data-wow-delay=".4s">Я свяжусь с вами в течении дня!</p>
+
+                            <!-- Счетчик времени -->
+                            <div class="countdown-timer wow fadeInUp" data-wow-delay=".5s">
+                                <p>Возврат на предыдущую страницу через <span id="timer">10</span> секунд...</p>
+                            </div>
+
+                            <!-- Кнопка для возврата на предыдущую страницу с отступом -->
+                            <a class="btn tj-btn-primary" href="javascript:history.back()" id="back-button" data-wow-delay=".6s" style="margin-top: 20px;">Вернуться назад</a>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
+
+        <script>
+            // Таймер обратного отсчета
+            var countdownElement = document.getElementById('timer');
+            var countdownTime = 10; // Время в секундах
+
+            function updateTimer() {
+                if (countdownTime > 0) {
+                    countdownTime--;
+                    countdownElement.textContent = countdownTime;
+                } else {
+                    // Когда таймер завершится, автоматический возврат на предыдущую страницу
+                    history.back();
+                }
+            }
+
+            // Обновление таймера каждую секунду
+            setInterval(updateTimer, 1000);
+
+        </script>
+
+
     </main>
 {% endblock %}

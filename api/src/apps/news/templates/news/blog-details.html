@@ -69,7 +69,7 @@
                     <span class="tj-comment__title">Написать комментарий</span>
                   </h3>
 
-                  <form method="post" action="" class="tj-post-comment__form">
+                  <form method="post" action="{% url 'news_detail_comment' category_slug=news_info.category.slagCategory news_slug=news_info.slugnews %}" class="tj-post-comment__form">
                       <p class="comment-notes">
                           <span id="email-notes">Вы можете оставить комментарий автору статьи</span>
                           <span class="required-field-message">Обязательные поля помечены <span class="required">*</span></span>

@@ -1,5 +1,5 @@
 from django import forms
-from api.src.models.news import Formsnews
+from src.models.news import Formsnews
 
 class FeedbackCreateForm(forms.ModelForm):
     """
