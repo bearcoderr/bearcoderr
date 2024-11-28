@@ -55,7 +55,7 @@ import-data-jobs:
   stage: import_data
   script:
     - echo "Импорт данных из бекапа..."
-    - docker-compose -f infrastructure/docker-compose.yaml exec -T web psql -U bearcoderr_user -d bearcoderr -f /app/backup.sql
+    - docker-compose -f infrastructure/docker-compose.yaml exec -T db psql -U bearcoderr_user -d bearcoderr -f /app/backup.sql
     - echo "Данные успешно импортированы!"
   needs:
     - deploy-jobs
