@@ -1,6 +1,7 @@
 stages:
   - build
   - migrate
+  - import_data
   - deploy
   - logs
 
@@ -33,6 +34,18 @@ migrate-jobs:
   only:
     - develop
 
+# Стейдж для импорта данных из бекапа
+import-data-jobs:
+  stage: import_data
+  script:
+    - echo "Импорт данных из бекапа..."
+    - docker-compose -f infrastructure/docker-compose.yaml run --rm import_db
+    - echo "Данные успешно импортированы!"
+  needs:
+    - migrate-jobs
+  only:
+    - develop
+
 # Стейдж деплоя контейнеров
 deploy-jobs:
   stage: deploy
@@ -44,7 +57,7 @@ deploy-jobs:
     - echo "Docker система:"
     - docker info
   needs:
-    - migrate-jobs
+    - import-data-jobs
   only:
     - develop
 
