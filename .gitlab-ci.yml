@@ -1,7 +1,6 @@
 stages:
   - build
   - deploy
-  - test
   - logs
 
 build-jobs:
