@@ -1,8 +1,18 @@
+image: docker:20.10.16 # Используем образ с Docker для CI
+
+services:
+  - docker:20.10.16-dind  # Сервис для Docker-in-Docker, чтобы работать с Docker внутри контейнера
+
 stages:
   - build
   - deploy
   - test
   - logs
+
+before_script:
+  - echo "Проверка прав доступа и Docker..."
+  - docker info || echo "Docker не доступен"
+  - docker-compose --version || echo "docker-compose не установлен"
 
 build-jobs:
   stage: build
@@ -35,4 +45,3 @@ deploy-jobs:
     - docker-compose -f infrastructure/docker-compose.yaml up -d
   only:
     - develop
-
