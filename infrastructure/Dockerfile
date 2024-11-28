@@ -1,4 +1,4 @@
-FROM python:3.11-slim
+FROM python:3.12-slim
 
 WORKDIR /app
 
@@ -18,4 +18,4 @@ COPY ../api ./api
 WORKDIR /app/api
 
 # Команда для запуска сервера
-CMD ["poetry", "run", "python", "manage.py", "runserver", "0.0.0.0:80"]
+CMD ["poetry", "run", "python", "manage.py", "runserver", "0.0.0.0:8000"]
