@@ -13,13 +13,13 @@ build-jobs:
     - echo "Запуск контейнера для проверки его содержимого..."
     - docker-compose -f infrastructure/docker-compose.yaml up -d  # Запускает контейнеры в фоновом режиме
     - echo "Просмотр структуры файлов в контейнере web..."
-    - docker exec -i infrastructure-web-1 ls -R /  # Вывод структуры всех директорий в контейнере
+    - docker exec -i bearcoder-web ls -R /  # Вывод структуры всех директорий в контейнере
     - echo "Поиск всех файлов в контейнере web..."
-    - docker exec -i infrastructure-web-1 find /  # Ищет все файлы в контейнере
+    - docker exec -i bearcoder-web find /  # Ищет все файлы в контейнере
     - echo "Просмотр логов контейнера web..."
-    - docker logs infrastructure-web-1 || echo "Логи не найдены"  # Печатает логи, если они есть
+    - docker logs bearcoder-web || echo "Логи не найдены"  # Печатает логи, если они есть
     - echo "Информация о контейнере web..."
-    - docker exec -i infrastructure-web-1 ps aux || echo "Команда ps не найдена"  # Проверка процессов в контейнере
+    - docker exec -i bearcoder-web ps aux || echo "Команда ps не найдена"  # Проверка процессов в контейнере
     - echo "Проверка состояния контейнеров после сборки..."
     - docker ps -a  # Состояние всех контейнеров
     - echo "Просмотр состояния Docker системы..."
@@ -43,8 +43,8 @@ logs-jobs:
     - echo "Состояние контейнеров:"
     - docker ps -a
     - echo "Логи контейнера web:"
-    - docker logs infrastructure-web-1
+    - docker logs bearcoder-web
     - echo "Логи контейнера db:"
-    - docker logs infrastructure-db-1
+    - docker logs bearcoder-db
   only:
     - new-branch
