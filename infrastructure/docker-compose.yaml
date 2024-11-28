@@ -4,6 +4,8 @@ services:
     build:
       context: ..
       dockerfile: infrastructure/Dockerfile
+    volumes:
+      - ../api:/app/api
     env_file:
       - .env
     environment:
@@ -53,6 +55,8 @@ services:
       context: ..
       dockerfile: infrastructure/Dockerfile
     command: poetry run celery -A src.config.celery worker --loglevel=info
+    volumes:
+      - ../api:/app/api
     env_file:
       - .env
     environment:
