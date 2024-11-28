@@ -34,17 +34,22 @@ migrate-jobs:
   only:
     - develop
 
-# Стейдж для импорта данных из бекапа
+# Стейдж для импорта данных в базу
 import-data-jobs:
   stage: import_data
   script:
-    - echo "Импорт данных из бекапа..."
-    - docker-compose -f infrastructure/docker-compose.yaml run --rm import_db
+    - echo "Подключение к базе данных и импорт данных из бекапа..."
+    - docker-compose -f infrastructure/docker-compose.yaml exec -T db psql -U docdevuserdb -d docdevdatabase -f /backup/backup.sql
     - echo "Данные успешно импортированы!"
   needs:
     - migrate-jobs
   only:
     - develop
+  # Предполагается, что бекап находится в /backup в контейнере
+  # Если бекап находится на хосте, вам нужно будет сначала копировать его в контейнер
+  before_script:
+    - echo "Копирование бекапа в контейнер..."
+    - docker cp ./backup.sql $(docker-compose -f infrastructure/docker-compose.yaml ps -q db):/backup/backup.sql
 
 # Стейдж деплоя контейнеров
 deploy-jobs:
