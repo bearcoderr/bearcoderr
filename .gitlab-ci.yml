@@ -1,7 +1,6 @@
 stages:
   - build
   - deploy
-  - deploy-database
   - logs
 
 build-jobs:
@@ -30,22 +29,7 @@ deploy-jobs:
   only:
     - develop
 
-deploy-database:
-  stage: deploy-database
-  image: postgres:16-alpine
-  variables:
-    PGPASSWORD: $POSTGRES_PASSWORD  # Устанавливаем пароль для PostgreSQL
-  script:
-    - echo "Загрузка дампа базы данных..."
-    # Копируем дамп в контейнер
-    - cp backup.sql /tmp/backup.sql
-    # Подключаемся к базе данных PostgreSQL и выполняем импорт дампа
-    - echo "Импорт данных из дампа..."
-    - psql -h $POSTGRES_HOST -U $POSTGRES_USER -d $POSTGRES_DB -f /tmp/backup.sql
-  dependencies:
-    - build-jobs
-  only:
-    - develop
+
 
 
 
