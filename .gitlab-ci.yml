@@ -4,11 +4,14 @@ stages:
   - test
   - logs
 
+before_script:
+  - echo "Проверка прав доступа и Docker..."
+  - docker info
+  - docker-compose --version || curl -sSL https://github.com/docker/compose/releases/download/$(curl -s https://api.github.com/repos/docker/compose/releases/latest | jq -r .tag_name)/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose
+  - docker-compose --version
+
 build-jobs:
   stage: build
-  image: docker:latest  # Используем официальный образ Docker, который включает docker-compose
-  services:
-    - docker:dind  # Запуск Docker-in-Docker
   script:
     - echo "Очистка старых Docker данных для освобождения места..."
     - docker system prune -af --volumes
@@ -31,14 +34,11 @@ build-jobs:
   only:
     - develop
 
-
-
 deploy-jobs:
   stage: deploy
   script:
     - echo "Деплой новых контейнеров..."
-    - docker-compose -f infrasructure/docker-compose.yaml up -d
+    - docker-compose -f infrastructure/docker-compose.yaml up -d
   only:
     - develop
-
 
