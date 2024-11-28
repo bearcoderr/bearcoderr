@@ -35,14 +35,9 @@ build-jobs:
 
 deploy-jobs:
   stage: deploy
-  image: docker:latest  # Используем образ с Docker, но также можем добавить docker-compose
-  services:
-    - docker:dind  # Запуск Docker-in-Docker
   script:
-    - echo "Установка docker-compose..."
-    - apk add --no-cache docker-compose  # Установка docker-compose для Alpine образа (если используется)
     - echo "Деплой новых контейнеров..."
-    - docker-compose -f infrastructure/docker-compose.yaml up -d
+    - docker-compose -f infrasructure/docker-compose.yaml up -d
   only:
     - develop
 
