@@ -47,17 +47,3 @@ deploy-jobs:
     - develop
 
 
-logs-jobs:
-  stage: logs
-  image: docker:latest  # Используем образ с Docker, но также можем добавить docker-compose
-  services:
-    - docker:dind
-  script:
-    - echo "Состояние контейнеров:"
-    - docker ps -a
-    - echo "Логи контейнера web:"
-    - docker logs bearcoder-web
-    - echo "Логи контейнера db:"
-    - docker logs bearcoder-db
-  only:
-    - develop
