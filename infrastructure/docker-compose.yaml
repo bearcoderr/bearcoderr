@@ -1,9 +1,9 @@
-
 services:
   web:
     build:
       context: ..
-      dockerfile: infrastructure/Dockerfile
+      dockerfile: bearcoder/Dockerfile
+    container_name: bearcoder-web  # Имя для контейнера web
     volumes:
       - ../api:/app/api
     env_file:
@@ -21,7 +21,6 @@ services:
       DB_HOST: ${DB_HOST}
       DB_PORT: ${DB_PORT}
       CELERY_BROKER_URL: ${CELERY_BROKER_URL}
-
       EMAIL_BACKEND: ${EMAIL_BACKEND}
       EMAIL_HOST: ${EMAIL_HOST}
       EMAIL_PORT: ${EMAIL_PORT}
@@ -29,7 +28,6 @@ services:
       EMAIL_HOST_USER: ${EMAIL_HOST_USER}
       EMAIL_HOST_PASSWORD: ${EMAIL_HOST_PASSWORD}
       DEFAULT_FROM_EMAIL: ${DEFAULT_FROM_EMAIL}
-
     depends_on:
       - db
       - redis
@@ -38,6 +36,7 @@ services:
 
   db:
     image: postgres:16-alpine
+    container_name: bearcoder-db  # Имя для контейнера с базой данных
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
@@ -47,13 +46,15 @@ services:
 
   redis:
     image: redis:7-alpine
+    container_name: bearcoder-redis  # Имя для контейнера Redis
     ports:
       - 6379:6379
 
   celery:
     build:
       context: ..
-      dockerfile: infrastructure/Dockerfile
+      dockerfile: bearcoder/Dockerfile
+    container_name: bearcoder-celery  # Имя для контейнера Celery
     command: poetry run celery -A src.config.celery worker --loglevel=info
     volumes:
       - ../api:/app/api
@@ -72,7 +73,6 @@ services:
       DB_HOST: ${DB_HOST}
       DB_PORT: ${DB_PORT}
       CELERY_BROKER_URL: ${CELERY_BROKER_URL}
-
       EMAIL_BACKEND: ${EMAIL_BACKEND}
       EMAIL_HOST: ${EMAIL_HOST}
       EMAIL_PORT: ${EMAIL_PORT}
@@ -80,7 +80,6 @@ services:
       EMAIL_HOST_USER: ${EMAIL_HOST_USER}
       EMAIL_HOST_PASSWORD: ${EMAIL_HOST_PASSWORD}
       DEFAULT_FROM_EMAIL: ${DEFAULT_FROM_EMAIL}
-
     depends_on:
       - redis
       - db

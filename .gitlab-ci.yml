@@ -17,13 +17,13 @@ build-jobs:
     - echo "Запуск контейнера для проверки его содержимого..."
     - docker-compose -f infrastructure/docker-compose.yaml up -d
     - echo "Просмотр структуры файлов в контейнере web..."
-    - docker exec -i infrastructure-web-1 ls -R /
+    - docker exec -i bearcoder-web-1 ls -R /
     - echo "Поиск всех файлов в контейнере web..."
-    - docker exec -i infrastructure-web-1 find /
+    - docker exec -i bearcoder-web-1 find /
     - echo "Просмотр логов контейнера web..."
-    - docker logs infrastructure-web-1 || echo "Логи не найдены"
+    - docker logs bearcoder-web-1 || echo "Логи не найдены"
     - echo "Информация о контейнере web..."
-    - docker exec -i infrastructure-web-1 ps aux || echo "Команда ps не найдена"
+    - docker exec -i bearcoder-web-1 ps aux || echo "Команда ps не найдена"
     - echo "Проверка состояния контейнеров после сборки..."
     - docker ps -a
     - echo "Просмотр состояния Docker системы..."
@@ -56,8 +56,8 @@ logs-jobs:
     - echo "Состояние контейнеров:"
     - docker ps -a
     - echo "Логи контейнера web:"
-    - docker logs infrastructure-web-1
+    - docker logs bearcoder-web-1
     - echo "Логи контейнера db:"
-    - docker logs infrastructure-db-1
+    - docker logs bearcoder-db-1
   only:
     - develop
