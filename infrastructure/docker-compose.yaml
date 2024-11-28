@@ -44,7 +44,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - "C:/Users/aleks/OneDrive/Рабочий стол/Django/bearcoderr/bearcoderr/poetry.lock:/app/poetry.lock"
+      - ./poetry.lock:/app/poetry.lock
 
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
