@@ -33,7 +33,7 @@ services:
       - redis
     ports:
       - 8001:8000
-    command: /usr/local/bin/wait-for-it db:5432 -- /usr/local/bin/wait-for-it redis:6379 -- poetry run python manage.py runserver 0.0.0.0:8000
+
 
   db:
     image: postgres:16-alpine
