@@ -1,8 +1,3 @@
-image: docker:20.10.16 # Используем образ с Docker для CI
-
-services:
-  - docker:20.10.16-dind  # Сервис для Docker-in-Docker, чтобы работать с Docker внутри контейнера
-
 stages:
   - build
   - deploy
