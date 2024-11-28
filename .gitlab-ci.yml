@@ -1,8 +1,8 @@
 stages:
   - build
   - migrate
-  - import_data
   - deploy
+  - import_data
   - logs
 
 # Стейдж сборки Docker образов
