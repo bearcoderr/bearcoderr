@@ -37,10 +37,12 @@ deploy-database:
     PGPASSWORD: $POSTGRES_PASSWORD  # Устанавливаем пароль для PostgreSQL
   script:
     - echo "Загрузка дампа базы данных..."
-    # Копируем файл дампа в контейнер
-    - docker cp backup.sql bearcoder-db:/tmp/backup.sql
-    # Выполняем импорт данных из дампа в базу данных
-    - docker exec -i bearcoder-db psql -U $POSTGRES_USER -d $POSTGRES_DB -f /tmp/backup.sql
+    # Сначала скопируем дамп в директорию, доступную CI/CD
+    - cp backup.sql /tmp/backup.sql
+    # Теперь подключаемся к базе данных PostgreSQL внутри контейнера с помощью psql
+    - |
+      echo "Импорт данных из дампа..."
+      PGPASSWORD=$POSTGRES_PASSWORD psql -h $POSTGRES_HOST -U $POSTGRES_USER -d $POSTGRES_DB -f /tmp/backup.sql
   dependencies:
     - build-jobs
   only:
