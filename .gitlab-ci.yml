@@ -11,7 +11,7 @@ build-jobs:
     - echo "Сборка образов..."
     - docker-compose -f infrastructure/docker-compose.yaml build
     - echo "Запуск контейнера для проверки его содержимого..."
-    - docker-compose -f infrastructure/docker-compose.yaml up
+    - docker-compose -f infrastructure/docker-compose.yaml up -d
     - echo "Просмотр структуры файлов в контейнере web..."
     - docker exec -i bearcoder-web ls -R /
     - echo "Поиск всех файлов в контейнере web..."
