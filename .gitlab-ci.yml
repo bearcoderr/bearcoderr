@@ -49,6 +49,9 @@ deploy-jobs:
 
 logs-jobs:
   stage: logs
+  image: docker:latest  # Используем образ с Docker, но также можем добавить docker-compose
+  services:
+    - docker:dind
   script:
     - echo "Состояние контейнеров:"
     - docker ps -a
