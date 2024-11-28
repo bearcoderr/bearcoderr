@@ -8,35 +8,51 @@ before_script:
   - echo "Проверка прав доступа и Docker..."
   - docker info || echo "Docker не доступен"
   - docker-compose --version || echo "docker-compose не установлен"
+  - docker ps -a || echo "Ошибка доступа к Docker-сокету"
 
+# Шаг для очистки старых данных Docker и сборки образов
 build-jobs:
   stage: build
   script:
     - echo "Очистка старых Docker данных для освобождения места..."
-    - docker system prune -af --volumes
+    - docker system prune -af --volumes  # Удаляем неиспользуемые контейнеры, тома и сети
     - echo "Сборка образов..."
-    - docker-compose -f infrastructure/docker-compose.yaml build
+    - docker-compose -f infrastructure/docker-compose.yaml build  # Собираем Docker образы
     - echo "Запуск контейнера для проверки его содержимого..."
-    - docker-compose -f infrastructure/docker-compose.yaml up -d
+    - docker-compose -f infrastructure/docker-compose.yaml up -d  # Запускаем контейнеры в фоновом режиме
     - echo "Просмотр структуры файлов в контейнере web..."
-    - docker exec -i bearcoder-web ls -R /
+    - docker exec -i bearcoder-web ls -R /  # Выводим структуру всех директорий в контейнере
     - echo "Поиск всех файлов в контейнере web..."
-    - docker exec -i bearcoder-web find /
+    - docker exec -i bearcoder-web find /  # Ищем все файлы в контейнере
     - echo "Просмотр логов контейнера web..."
-    - docker logs bearcoder-web || echo "Логи не найдены"
+    - docker logs bearcoder-web || echo "Логи не найдены"  # Печатаем логи, если они есть
     - echo "Информация о контейнере web..."
-    - docker exec -i bearcoder-web ps aux || echo "Команда ps не найдена"
+    - docker exec -i bearcoder-web ps aux || echo "Команда ps не найдена"  # Проверяем процессы в контейнере
     - echo "Проверка состояния контейнеров после сборки..."
-    - docker ps -a
+    - docker ps -a  # Состояние всех контейнеров
     - echo "Просмотр состояния Docker системы..."
-    - docker info
+    - docker info  # Информация о текущем состоянии Docker
   only:
-    - develop
+    - develop  # Запускается только для ветки develop
 
+# Шаг деплоя новых контейнеров
 deploy-jobs:
   stage: deploy
   script:
     - echo "Деплой новых контейнеров..."
-    - docker-compose -f infrastructure/docker-compose.yaml up -d
+    - docker-compose -f infrastructure/docker-compose.yaml up -d  # Деплой контейнеров в фоновом режиме
   only:
-    - develop
+    - develop  # Запускается только для ветки develop
+
+# Шаг для просмотра состояния контейнеров и логов
+logs-jobs:
+  stage: logs
+  script:
+    - echo "Состояние контейнеров:"
+    - docker ps -a  # Просмотр всех контейнеров
+    - echo "Логи контейнера web:"
+    - docker logs bearcoder-web  # Логи контейнера web
+    - echo "Логи контейнера db:"
+    - docker logs bearcoder-db  # Логи контейнера db
+  only:
+    - develop  # Запускается только для ветки develop
