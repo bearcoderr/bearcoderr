@@ -1,14 +1,21 @@
-FROM python:3.12-slim
+FROM python:3.11-slim
 
 WORKDIR /app
 
-COPY ../pyproject.toml ./
-COPY ../poetry.lock ./
+RUN apt-get update
 
-RUN pip install poetry && poetry install
+COPY ../pyproject.toml ../poetry.lock ./
 
+RUN pip install poetry
+
+# Устанавливаем зависимости
+RUN poetry install --no-dev
+
+# Копируем папку api в контейнер
 COPY ../api ./api
 
+# Указываем рабочую директорию для Django
 WORKDIR /app/api
 
-CMD ["poetry", "run", "python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Команда для запуска сервера
+CMD ["poetry", "run", "python", "manage.py", "runserver", "0.0.0.0:80"]
