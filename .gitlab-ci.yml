@@ -2,7 +2,6 @@ stages:
   - build
   - migrate
   - deploy
-  - import_data
   - logs
 
 # Стейдж сборки Docker образов
@@ -46,19 +45,6 @@ deploy-jobs:
     - docker info
   needs:
     - migrate-jobs
-  only:
-    - develop
-
-
-# Стейдж для импорта данных в базу
-import-data-jobs:
-  stage: import_data
-  script:
-    - echo "Импорт данных из бекапа..."
-    - docker-compose -f infrastructure/docker-compose.yaml exec -T db psql -U bearcoderr_user -d bearcoderr -f /app/backup/backup.sql
-    - echo "Данные успешно импортированы!"
-  needs:
-    - deploy-jobs
   only:
     - develop
 
