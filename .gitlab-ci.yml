@@ -1,0 +1,51 @@
+stages:
+  - build
+  - deploy
+  - test
+  - logs
+
+build-jobs:
+  stage: build
+  script:
+    - echo "Очистка старых Docker данных для освобождения места..."
+    - docker system prune -af --volumes  # Удаляет неиспользуемые контейнеры, тома и сети
+    - echo "Сборка образов..."
+    - docker-compose -f infrastructure/docker-compose.yaml build  # Собирает Docker образы
+    - echo "Запуск контейнера для проверки его содержимого..."
+    - docker-compose -f infrastructure/docker-compose.yaml up -d  # Запускает контейнеры в фоновом режиме
+    - echo "Просмотр структуры файлов в контейнере web..."
+    - docker exec -i infrastructure-web-1 ls -R /  # Вывод структуры всех директорий в контейнере
+    - echo "Поиск всех файлов в контейнере web..."
+    - docker exec -i infrastructure-web-1 find /  # Ищет все файлы в контейнере
+    - echo "Просмотр логов контейнера web..."
+    - docker logs infrastructure-web-1 || echo "Логи не найдены"  # Печатает логи, если они есть
+    - echo "Информация о контейнере web..."
+    - docker exec -i infrastructure-web-1 ps aux || echo "Команда ps не найдена"  # Проверка процессов в контейнере
+    - echo "Проверка состояния контейнеров после сборки..."
+    - docker ps -a  # Состояние всех контейнеров
+    - echo "Просмотр состояния Docker системы..."
+    - docker info  # Информация о текущем состоянии Docker
+
+  only:
+    - new-branch  # Запускается только для ветки new-branch
+
+
+deploy-jobs:
+  stage: deploy
+  script:
+    - echo "Деплой новых контейнеров..."
+    - docker-compose -f infrastructure/docker-compose.yaml up -d
+  only:
+    - new-branch
+
+logs-jobs:
+  stage: logs
+  script:
+    - echo "Состояние контейнеров:"
+    - docker ps -a
+    - echo "Логи контейнера web:"
+    - docker logs infrastructure-web-1
+    - echo "Логи контейнера db:"
+    - docker logs infrastructure-db-1
+  only:
+    - new-branch
