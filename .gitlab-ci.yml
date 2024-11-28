@@ -34,22 +34,18 @@ deploy-database:
   stage: deploy-database
   image: postgres:16-alpine
   variables:
-    PGPASSWORD: $POSTGRES_PASSWORD
+    PGPASSWORD: $POSTGRES_PASSWORD  # Устанавливаем пароль для PostgreSQL
   script:
     - echo "Загрузка дампа базы данных..."
-    - |
-      # Убедимся, что файл backup.sql существует и его можно использовать
-      if [ -f backup.sql ]; then
-        echo "Импорт из дампа SQL..."
-        psql -h $DB_HOST -U $POSTGRES_USER -d $POSTGRES_DB -f backup.sql
-      else
-        echo "Файл backup.sql не найден!"
-        exit 1
-      fi
+    # Копируем файл дампа в контейнер
+    - docker cp backup.sql bearcoder-db:/tmp/backup.sql
+    # Выполняем импорт данных из дампа в базу данных
+    - docker exec -i bearcoder-db psql -U $POSTGRES_USER -d $POSTGRES_DB -f /tmp/backup.sql
   dependencies:
     - build-jobs
   only:
     - develop
+
 
 
 
