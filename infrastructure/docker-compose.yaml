@@ -36,13 +36,18 @@ services:
 
   db:
     image: postgres:16-alpine
-    container_name: bearcoder-db  # Имя для контейнера с базой данных
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
+    container_name: bearcoder-db  # Имя для контейнера PostgreSQL
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   redis:
     image: redis:7-alpine
