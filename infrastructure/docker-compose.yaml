@@ -4,8 +4,6 @@ services:
       context: ..
       dockerfile: infrastructure/Dockerfile
     container_name: bearcoder-web  # Имя для контейнера web
-    volumes:
-      - ../api:/app/api
     env_file:
       - .env
     environment:
@@ -61,8 +59,6 @@ services:
       dockerfile: infrastructure/Dockerfile
     container_name: bearcoder-celery  # Имя для контейнера Celery
     command: poetry run celery -A src.config.celery worker --loglevel=info
-    volumes:
-      - ../api:/app/api
     env_file:
       - .env
     environment:
