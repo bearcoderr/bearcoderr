@@ -6,26 +6,31 @@ stages:
 
 build-jobs:
   stage: build
+  image: docker:latest  # Используем официальный образ Docker, который включает docker-compose
+  services:
+    - docker:dind  # Запуск Docker-in-Docker
   script:
+    - echo "Очистка старых Docker данных для освобождения места..."
+    - docker system prune -af --volumes
     - echo "Сборка образов..."
-    - docker-compose -f infrastructure/docker-compose.yaml build  # Собирает Docker образы
+    - docker-compose -f infrastructure/docker-compose.yaml build
     - echo "Запуск контейнера для проверки его содержимого..."
-    - docker-compose -f infrastructure/docker-compose.yaml up -d  # Запускает контейнеры в фоновом режиме
+    - docker-compose -f infrastructure/docker-compose.yaml up -d
     - echo "Просмотр структуры файлов в контейнере web..."
-    - docker exec -i infrastructure-web-1 ls -R /  # Вывод структуры всех директорий в контейнере
+    - docker exec -i infrastructure-web-1 ls -R /
     - echo "Поиск всех файлов в контейнере web..."
-    - docker exec -i infrastructure-web-1 find /  # Ищет все файлы в контейнере
+    - docker exec -i infrastructure-web-1 find /
     - echo "Просмотр логов контейнера web..."
-    - docker logs infrastructure-web-1 || echo "Логи не найдены"  # Печатает логи, если они есть
+    - docker logs infrastructure-web-1 || echo "Логи не найдены"
     - echo "Информация о контейнере web..."
-    - docker exec -i infrastructure-web-1 ps aux || echo "Команда ps не найдена"  # Проверка процессов в контейнере
+    - docker exec -i infrastructure-web-1 ps aux || echo "Команда ps не найдена"
     - echo "Проверка состояния контейнеров после сборки..."
-    - docker ps -a  # Состояние всех контейнеров
+    - docker ps -a
     - echo "Просмотр состояния Docker системы..."
-    - docker info  # Информация о текущем состоянии Docker
-
+    - docker info
   only:
-    - develop  # Запускается только для ветки develop
+    - develop
+
 
 
 deploy-jobs:
