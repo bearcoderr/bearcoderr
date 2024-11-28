@@ -34,17 +34,6 @@ migrate-jobs:
   only:
     - develop
 
-# Стейдж для импорта данных в базу
-import-data-jobs:
-  stage: import_data
-  script:
-    - echo "Импорт данных из бекапа..."
-    - docker-compose -f infrastructure/docker-compose.yaml exec -T db psql -U bearcoderr_user -d bearcoderr -f /app/backup.sql
-    - echo "Данные успешно импортированы!"
-  needs:
-    - migrate-jobs
-  only:
-    - develop
 
 
 # Стейдж деплоя контейнеров
@@ -61,6 +50,20 @@ deploy-jobs:
     - import-data-jobs
   only:
     - develop
+
+
+# Стейдж для импорта данных в базу
+import-data-jobs:
+  stage: import_data
+  script:
+    - echo "Импорт данных из бекапа..."
+    - docker-compose -f infrastructure/docker-compose.yaml exec -T db psql -U bearcoderr_user -d bearcoderr -f /app/backup.sql
+    - echo "Данные успешно импортированы!"
+  needs:
+    - migrate-jobs
+  only:
+    - develop
+
 
 # Стейдж для логов контейнеров
 logs-jobs:
