@@ -1,9 +1,13 @@
+version: '3.8'
+
 services:
   web:
     build:
       context: ..
       dockerfile: infrastructure/Dockerfile
     container_name: bearcoder-web  # Имя для контейнера web
+    volumes:
+      - ../api:/app/api
     env_file:
       - .env
     environment:
@@ -31,6 +35,7 @@ services:
       - redis
     ports:
       - 8001:8000
+    command: /usr/local/bin/wait-for-it db:5432 -- /usr/local/bin/wait-for-it redis:6379 -- poetry run python manage.py runserver 0.0.0.0:8000
 
   db:
     image: postgres:16-alpine
@@ -59,6 +64,8 @@ services:
       dockerfile: infrastructure/Dockerfile
     container_name: bearcoder-celery  # Имя для контейнера Celery
     command: poetry run celery -A src.config.celery worker --loglevel=info
+    volumes:
+      - ../api:/app/api
     env_file:
       - .env
     environment:
