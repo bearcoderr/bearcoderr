@@ -1,8 +1,10 @@
 stages:
   - build
+  - migrate
   - deploy
   - logs
 
+# Стейдж сборки Docker образов
 build-jobs:
   stage: build
   script:
@@ -19,22 +21,34 @@ build-jobs:
   only:
     - develop
 
-deploy-jobs:
-  stage: deploy
+# Стейдж для миграций базы данных
+migrate-jobs:
+  stage: migrate
   script:
-    - echo "Деплой новых контейнеров..."
-    - docker-compose -f infrastructure/docker-compose.yaml up -d
+    - echo "Применение миграций Django..."
+    - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py migrate
+    - echo "Миграции завершены!"
   needs:
     - build-jobs
   only:
     - develop
 
+# Стейдж деплоя контейнеров
+deploy-jobs:
+  stage: deploy
+  script:
+    - echo "Деплой новых контейнеров..."
+    - docker-compose -f infrastructure/docker-compose.yaml up -d
+    - echo "Проверка состояния контейнеров после деплоя..."
+    - docker ps -a
+    - echo "Docker система:"
+    - docker info
+  needs:
+    - migrate-jobs
+  only:
+    - develop
 
-
-
-
-
-
+# Стейдж для логов контейнеров
 logs-jobs:
   stage: logs
   script:

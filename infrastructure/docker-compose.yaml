@@ -88,19 +88,5 @@ services:
       - redis
       - db
 
-
-  import_db:
-      image: postgres:16-alpine
-      container_name: bearcoder-import-db
-      depends_on:
-        - db
-      volumes:
-        - ./backup.sql:/tmp/backup.sql
-      entrypoint: ["sh", "-c", "echo 'Starting database import...' && psql -h db -U ${POSTGRES_USER} -d ${POSTGRES_DB} -f /tmp/backup.sql"]
-      environment:
-        POSTGRES_DB: ${POSTGRES_DB}
-        POSTGRES_USER: ${POSTGRES_USER}
-        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-
 volumes:
   postgres_data:
