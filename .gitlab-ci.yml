@@ -37,12 +37,20 @@ deploy-database:
     PGPASSWORD: $POSTGRES_PASSWORD
   script:
     - echo "Загрузка дампа базы данных..."
-    - docker cp backup.sql $CONTAINER_ID:/tmp/backup.sql
-    - docker exec -i $CONTAINER_ID psql -U $POSTGRES_USER -d $POSTGRES_DB -f /tmp/backup.sql
+    - |
+      # Убедимся, что файл backup.sql существует и его можно использовать
+      if [ -f backup.sql ]; then
+        echo "Импорт из дампа SQL..."
+        psql -h $DB_HOST -U $POSTGRES_USER -d $POSTGRES_DB -f backup.sql
+      else
+        echo "Файл backup.sql не найден!"
+        exit 1
+      fi
   dependencies:
     - build-jobs
   only:
     - develop
+
 
 
 logs-jobs:
