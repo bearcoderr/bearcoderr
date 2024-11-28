@@ -34,8 +34,6 @@ migrate-jobs:
   only:
     - develop
 
-
-
 # Стейдж деплоя контейнеров
 deploy-jobs:
   stage: deploy
@@ -47,7 +45,7 @@ deploy-jobs:
     - echo "Docker система:"
     - docker info
   needs:
-    - import-data-jobs
+    - migrate-jobs
   only:
     - develop
 
@@ -60,7 +58,7 @@ import-data-jobs:
     - docker-compose -f infrastructure/docker-compose.yaml exec -T db psql -U bearcoderr_user -d bearcoderr -f /app/backup.sql
     - echo "Данные успешно импортированы!"
   needs:
-    - migrate-jobs
+    - deploy-jobs
   only:
     - develop
 
