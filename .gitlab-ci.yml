@@ -27,7 +27,7 @@ build-jobs:
     - docker info  # Информация о текущем состоянии Docker
 
   only:
-    - new-branch  # Запускается только для ветки new-branch
+    - develop  # Запускается только для ветки develop
 
 
 deploy-jobs:
@@ -36,7 +36,7 @@ deploy-jobs:
     - echo "Деплой новых контейнеров..."
     - docker-compose -f infrastructure/docker-compose.yaml up -d
   only:
-    - new-branch
+    - develop
 
 logs-jobs:
   stage: logs
@@ -48,4 +48,4 @@ logs-jobs:
     - echo "Логи контейнера db:"
     - docker logs infrastructure-db-1
   only:
-    - new-branch
+    - develop
