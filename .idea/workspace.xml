@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="31e9b336-e1ed-45cb-b187-3cf1b13a83b1" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infrastructure/docker-compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/docker-compose.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,9 +67,9 @@
       <recent name="C:\Users\aleks\OneDrive\Рабочий стол\Django\bearcoderr\bearcoderr\api\src\domain" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\aleks\OneDrive\Рабочий стол\Django\bearcoderr\bearcoderr" />
       <recent name="C:\Users\aleks\OneDrive\Рабочий стол\Django\bearcoderr\bearcoderr\api\src\domain\base_settings" />
       <recent name="C:\Users\aleks\OneDrive\Рабочий стол\Django\bearcoderr\bearcoderr\api\src\models" />
-      <recent name="C:\Users\aleks\OneDrive\Рабочий стол\Django\bearcoderr\bearcoderr" />
       <recent name="C:\Users\aleks\OneDrive\Рабочий стол\Django\bearcoderr\bearcoderr\infrastructure" />
       <recent name="C:\Users\aleks\OneDrive\Рабочий стол\Django\bearcoderr\bearcoderr\api\src\config" />
     </key>
