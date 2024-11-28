@@ -34,12 +34,13 @@ deploy-database:
   stage: deploy-database
   image: postgres:16-alpine
   variables:
-    PGPASSWORD: $POSTGRES_PASSWORD  # Используем переменную для безопасности
+    PGPASSWORD: $POSTGRES_PASSWORD
   script:
     - echo "Загрузка дампа базы данных..."
-    - cat backup.sql | psql -h $DB_HOST -U $POSTGRES_USER -d $POSTGRES_DB
+    - docker cp backup.sql $CONTAINER_ID:/tmp/backup.sql
+    - docker exec -i $CONTAINER_ID psql -U $POSTGRES_USER -d $POSTGRES_DB -f /tmp/backup.sql
   dependencies:
-    - build-jobs  # Убедимся, что build-jobs завершен успешно перед этим шагом
+    - build-jobs
   only:
     - develop
 
