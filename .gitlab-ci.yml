@@ -7,8 +7,6 @@ stages:
 build-jobs:
   stage: build
   script:
-    - echo "Очистка старых Docker данных для освобождения места..."
-    - docker system prune -af --volumes  # Удаляет неиспользуемые контейнеры, тома и сети
     - echo "Сборка образов..."
     - docker-compose -f infrastructure/docker-compose.yaml build  # Собирает Docker образы
     - echo "Запуск контейнера для проверки его содержимого..."
