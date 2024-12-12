@@ -21,8 +21,9 @@ COPY ../api ./api
 # Указываем рабочую директорию для Django
 WORKDIR /app/api
 
-# Очищаем старые миграции, но сохраняем __init__.py
-RUN find ./src/models/migrations/ -type f ! -name "__init__.py" -delete
+# Убеждаемся, что папка существует, и очищаем старые миграции, оставляя __init__.py
+RUN mkdir -p ./src/models/migrations/ && \
+    find ./src/models/migrations/ -type f ! -name "__init__.py" -delete
 
 # Создаём и применяем миграции
 RUN poetry run python manage.py makemigrations --noinput && \
