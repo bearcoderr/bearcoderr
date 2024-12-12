@@ -23,16 +23,10 @@ build-jobs:
 migrate-jobs:
   stage: migrate
   script:
-    - echo "Очистка старых миграций Django..."
-    - docker-compose -f infrastructure/docker-compose.yaml run --rm web bash -c "find ./src/models/migrations/ -type f ! -name '__init__.py' -delete"
+    - docker-compose -f infrastructure/docker-compose.yaml run --rm web bash -c "poetry install"
+    - docker-compose -f infrastructure/docker-compose.yaml run --rm web bash -c "poetry run python manage.py makemigrations models"
+    - docker-compose -f infrastructure/docker-compose.yaml run --rm web bash -c "poetry run python manage.py migrate models"
 
-    - echo "Создание новых миграций Django..."
-    - docker-compose -f infrastructure/docker-compose.yaml run --rm web bash -c "poetry run python manage.py makemigrations models --noinput"
-
-    - echo "Применение миграций Django..."
-    - docker-compose -f infrastructure/docker-compose.yaml run --rm web bash -c "poetry run python manage.py migrate models --noinput"
-
-    - echo "Миграции завершены!"
   needs:
     - build-jobs
   only:
