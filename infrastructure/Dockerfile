@@ -12,9 +12,6 @@ RUN apt-get update && \
 COPY ../pyproject.toml ../poetry.lock ./
 RUN pip install poetry
 
-# Устанавливаем зависимости проекта
-RUN poetry install --no-dev --no-root
-
 # Копируем папку api в контейнер
 COPY ../api ./api
 
@@ -25,9 +22,12 @@ WORKDIR /app/api
 RUN mkdir -p ./src/models/migrations/ && \
     find ./src/models/migrations/ -type f ! -name "__init__.py" -delete
 
+# Проверяем, что manage.py есть в папке
+RUN ls -l /app/api/manage.py
+
 # Создаём и применяем миграции
 RUN poetry run python manage.py makemigrations --noinput && \
     poetry run python manage.py migrate --noinput
 
-# Команда для запуска сервера Django через Poetry
+# Команда для запуска Django через Poetry
 CMD ["poetry", "run", "python", "manage.py", "runserver", "0.0.0.0:8000"]
