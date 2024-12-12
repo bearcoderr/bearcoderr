@@ -20,7 +20,18 @@ build-jobs:
     - develop
 
 # Стейдж для создания и применения миграций базы данных
-
+migrate-jobs:
+  stage: migrate
+  script:
+    - echo "Установка зависимостей..."
+    - docker-compose -f infrastructure/docker-compose.yaml run --rm web bash -c "poetry install"
+    - echo "Создание миграций..."
+    - docker-compose -f infrastructure/docker-compose.yaml run web poetry run python manage.py makemigrations
+    - docker-compose -f infrastructure/docker-compose.yaml run web poetry run python manage.py migrate
+  needs:
+    - build-jobs
+  only:
+    - develop
 
 # Стейдж деплоя контейнеров
 deploy-jobs:
@@ -32,8 +43,6 @@ deploy-jobs:
     - docker ps -a
     - echo "Информация о Docker:"
     - docker info
-    - docker-compose -f infrastructure/docker-compose.yaml run web poetry run python manage.py makemigrations
-    - docker-compose -f infrastructure/docker-compose.yaml run web poetry run python manage.py migrate
   needs:
     - migrate-jobs
   only:
