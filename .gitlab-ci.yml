@@ -24,9 +24,9 @@ migrate-jobs:
   stage: migrate
   script:
     - echo "Создание миграций Django..."
-    - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py makemigrations --noinput
+    - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py makemigrations
     - echo "Применение миграций Django..."
-    - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py migrate --noinput
+    - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py migrate
     - echo "Миграции завершены!"
   needs:
     - build-jobs
