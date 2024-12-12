@@ -8,26 +8,27 @@ stages:
 build-jobs:
   stage: build
   script:
-    - echo "Очистка старых Docker данных для освобождения места..."
-    - docker system prune -af --volumes
     - echo "Сборка образов..."
     - docker-compose -f infrastructure/docker-compose.yaml build
     - echo "Запуск контейнеров для проверки..."
     - docker-compose -f infrastructure/docker-compose.yaml up -d
     - echo "Проверка состояния контейнеров после сборки..."
     - docker ps -a
-    - echo "Docker система:"
+    - echo "Информация о Docker:"
     - docker info
   only:
     - develop
 
-# Стейдж для миграций базы данных
+# Стейдж для создания и применения миграций базы данных
 migrate-jobs:
   stage: migrate
   script:
-    - echo "Применение миграций Django..."
-    - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py migrate
-    - echo "Миграции завершены!"
+    - echo "Установка зависимостей..."
+    - docker-compose -f infrastructure/docker-compose.yaml run --rm web bash -c "poetry install"
+    - echo "Создание миграций..."
+    - docker-compose -f infrastructure/docker-compose.yaml run --rm web bash -c "poetry run python manage.py makemigrations models --noinput"
+    - echo "Применение миграций..."
+    - docker-compose -f infrastructure/docker-compose.yaml run --rm web bash -c "poetry run python manage.py migrate models"
   needs:
     - build-jobs
   only:
@@ -38,24 +39,23 @@ deploy-jobs:
   stage: deploy
   script:
     - echo "Деплой новых контейнеров..."
-    - docker-compose -f infrastructure/docker-compose.yaml up -d
+    - docker-compose -f infrastructure/docker-compose.yaml up -d --build
     - echo "Проверка состояния контейнеров после деплоя..."
     - docker ps -a
-    - echo "Docker система:"
+    - echo "Информация о Docker:"
     - docker info
-    - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py makemigrations
-    - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py migrate
+    - docker-compose -f infrastructure/docker-compose.yaml run web poetry run python manage.py makemigrations
+    - docker-compose -f infrastructure/docker-compose.yaml run web poetry run python manage.py migrate
   needs:
     - migrate-jobs
   only:
-    - develop
-
+    - main
 
 # Стейдж для логов контейнеров
 logs-jobs:
   stage: logs
   script:
-    - echo "Состояние контейнеров:"
+    - echo "Статус контейнеров:"
     - docker ps -a
     - echo "Логи контейнера web:"
     - docker logs bearcoder-web
