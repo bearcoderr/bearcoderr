@@ -40,6 +40,8 @@ deploy-jobs:
   script:
     - echo "Деплой новых контейнеров..."
     - docker-compose -f infrastructure/docker-compose.yaml up -d
+    - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py makemigrations
+    - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py migrate
     - echo "Проверка состояния контейнеров после деплоя..."
     - docker ps -a
     - echo "Docker система:"
