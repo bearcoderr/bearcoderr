@@ -1,15 +1,19 @@
+# Используем базовый образ Python 3.12
 FROM python:3.12-slim
 
-WORKDIR /app
+# Обновляем пакеты и устанавливаем зависимости для Poetry
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    build-essential \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update
-
-COPY ../pyproject.toml ../poetry.lock  ./
-
+# Устанавливаем Poetry
+COPY ../pyproject.toml ../poetry.lock ./
 RUN pip install poetry
 
-# Устанавливаем зависимости
-RUN poetry install --no-dev
+# Устанавливаем зависимости проекта
+RUN poetry install --no-dev --no-root
 
 # Копируем папку api в контейнер
 COPY ../api ./api
@@ -17,5 +21,12 @@ COPY ../api ./api
 # Указываем рабочую директорию для Django
 WORKDIR /app/api
 
-# Команда для запуска сервера
+# Очищаем старые миграции, но сохраняем __init__.py
+RUN find ./src/models/migrations/ -type f ! -name "__init__.py" -delete
+
+# Создаём и применяем миграции
+RUN poetry run python manage.py makemigrations --noinput && \
+    poetry run python manage.py migrate --noinput
+
+# Команда для запуска сервера Django через Poetry
 CMD ["poetry", "run", "python", "manage.py", "runserver", "0.0.0.0:8000"]
