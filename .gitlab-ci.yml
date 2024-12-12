@@ -8,6 +8,8 @@ stages:
 build-jobs:
   stage: build
   script:
+    - echo "Очистка старых Docker данных для освобождения места..."
+    - docker system prune -af --volumes
     - echo "Сборка образов..."
     - docker-compose -f infrastructure/docker-compose.yaml build
     - echo "Запуск контейнеров для проверки..."
@@ -19,20 +21,17 @@ build-jobs:
   only:
     - develop
 
-# Стейдж для создания и применения миграций базы данных
+# Стейдж для миграций базы данных
 migrate-jobs:
   stage: migrate
   script:
-    - docker-compose -f infrastructure/docker-compose.yaml run --rm web bash -c "poetry install"
-    - docker-compose -f infrastructure/docker-compose.yaml run --rm web bash -c "poetry run python manage.py makemigrations models"
-    - docker-compose -f infrastructure/docker-compose.yaml run --rm web bash -c "poetry run python manage.py migrate models"
-
+    - echo "Применение миграций Django..."
+    - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py migrate
+    - echo "Миграции завершены!"
   needs:
     - build-jobs
   only:
     - develop
-
-
 
 # Стейдж деплоя контейнеров
 deploy-jobs:
@@ -44,10 +43,13 @@ deploy-jobs:
     - docker ps -a
     - echo "Docker система:"
     - docker info
+    - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py makemigrations
+    - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py migrate
   needs:
     - migrate-jobs
   only:
     - develop
+
 
 # Стейдж для логов контейнеров
 logs-jobs:
