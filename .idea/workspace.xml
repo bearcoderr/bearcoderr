@@ -6,7 +6,34 @@
   <component name="ChangeListManager">
     <list default="true" id="31e9b336-e1ed-45cb-b187-3cf1b13a83b1" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/news_dump.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/apps/news/repository.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/apps/news/repository.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/apps/news/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/apps/news/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/domain/news/dto.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/domain/news/dto.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/domain/news/repository_abs.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/domain/news/repository_abs.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/domain/news/services.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/domain/news/services.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/domain/services/dto.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/domain/services/dto.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/models/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/models/migrations/0002_alter_gallerysite_sluggallery.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/models/migrations/0003_gallerysite_gallery_images_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/models/migrations/0004_remove_gallerysite_exeptgallery_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/models/migrations/0005_alter_settings_options_remove_settings_menusitelist_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/models/migrations/0006_alter_experiencesettings_textexperience_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/models/migrations/0007_alter_experiencesettings_year_old_experience.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/models/migrations/0008_alter_experiencesettings_yearexperience_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/models/migrations/0009_alter_servicessite_exeptservices_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/models/migrations/0010_remove_news_gallery_remove_news_datanews_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/models/migrations/0011_alter_formsnews_options_remove_news_feetbicke_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/models/migrations/0012_alter_formsnews_time_create.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/models/migrations/0013_remove_news_category_news_category.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/models/migrations/0014_newscategory_contentcategory.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/models/migrations/0015_news_countview.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/models/news.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/models/news.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backup.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bearcoderr_backup.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/infrastructure/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infrastructure/docker-compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/docker-compose.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/poetry.lock" beforeDir="false" afterPath="$PROJECT_DIR$/poetry.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

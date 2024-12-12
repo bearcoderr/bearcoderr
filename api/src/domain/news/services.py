@@ -1,5 +1,5 @@
 from .repository_abs import NewsRepositoryAbs
-from .dto import NewsDTO, CommentDTO
+from .dto import NewsDTO, CommentDTO, FeedDTO
 
 
 class NewsService(NewsRepositoryAbs):
@@ -33,3 +33,6 @@ class NewsService(NewsRepositoryAbs):
 
     def post_comment(self, comment: CommentDTO):
         return self.repository.post_comment(comment)
+
+    def get_list_news_feed(self) -> list[FeedDTO]:
+        return self.repository.get_list_news_feed()

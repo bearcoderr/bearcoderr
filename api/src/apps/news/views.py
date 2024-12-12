@@ -159,20 +159,21 @@ class NewsFeed(Feed):
     link = 'http://localhost:8001/'# Используем настройку из settings
     description = "Описание RSS-ленты"
 
-    news_repository = NewsRepository()
-    news_services = NewsService(news_repository)
+    get_list_news_feed = NewsRepository()
+    news_services = NewsService(get_list_news_feed)
 
     def items(self):
-        return self.news_services.get_news_list()
+        return self.news_services.get_list_news_feed()
 
     def item_title(self, item):
         return item.titlenews
 
+    def item_description(self, item):
+        return item.text_twitter[:200]  # Краткий анонс новости
+
     def item_link(self, item):
         return f"http://localhost:8001/news/{item.slugnews}/" if hasattr(item, 'slugnews') and item.slugnews else 'http://localhost:8001/'
 
-    def item_pubdate(self, item):
-        return item.published_at
 
     def item_extra_kwargs(self, item):
         return {

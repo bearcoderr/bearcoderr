@@ -81,6 +81,16 @@ class news(models.Model):
     tags = models.ManyToManyField('newsTag', blank=True, verbose_name='Теги статьи')
     category = models.ForeignKey('newsCategory', on_delete=models.SET_NULL, verbose_name='Категория', blank=True, null=True)
 
+    ## Мини пост для соц сетей ##
+    img_social = models.ImageField(upload_to='photos/news/', verbose_name='Миниатюра изображения', blank=True, null=True)
+    text_social = RichTextField(verbose_name='Контент поста', max_length=500, blank=True, null=True)
+    text_twitter = RichTextField(verbose_name='Контент твита', max_length=200, blank=True, null=True)
+    feed_not = models.BooleanField(default=False, verbose_name='Не отправлять в соц сети')
+
+    def __str__(self):
+        return self.titlenews
+
+
     def is_published(self):
         """Проверка, что статья опубликована"""
         # Если поле published_at пустое, считаем статью опубликованной сразу
@@ -115,9 +125,6 @@ class news(models.Model):
     class Meta:
         verbose_name = 'Новость'
         verbose_name_plural = 'Блог'
-
-    def __str__(self):
-        return self.titlenews
 
 
 class Formsnews(models.Model):

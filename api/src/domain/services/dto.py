@@ -5,7 +5,7 @@ from django.core.files import File
 
 @dataclass
 class ServicesDTO:
-    titleServices: str
-    contentServices: str
-    exeptServices: str
+    titleServices: str = "Default Service Title"
+    contentServices: str = "Default Content for Services"
+    exeptServices: str = "Default Exceptions for Services"
     imgServices: Optional[File] = None

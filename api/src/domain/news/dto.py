@@ -39,3 +39,11 @@ class CommentDTO:
     textComm: str
     time_create: str
     post_id: int
+
+@dataclass
+class FeedDTO:
+    imgnews: str
+    titlenews: str
+    slugnews: str
+    contentnews: str
+    text_twitter: str

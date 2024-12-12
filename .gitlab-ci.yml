@@ -8,8 +8,6 @@ stages:
 build-jobs:
   stage: build
   script:
-    - echo "Очистка старых Docker данных для освобождения места..."
-    - docker system prune -af --volumes
     - echo "Сборка образов..."
     - docker-compose -f infrastructure/docker-compose.yaml build
     - echo "Запуск контейнеров для проверки..."
@@ -47,7 +45,6 @@ deploy-jobs:
     - migrate-jobs
   only:
     - develop
-
 
 # Стейдж для логов контейнеров
 logs-jobs:
