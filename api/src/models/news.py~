@@ -85,7 +85,6 @@ class news(models.Model):
     img_social = models.ImageField(upload_to='photos/news/', verbose_name='Миниатюра изображения', blank=True, null=True)
     text_social = RichTextField(verbose_name='Контент поста', max_length=500, blank=True, null=True)
     text_twitter = RichTextField(verbose_name='Контент твита', max_length=200, blank=True, null=True)
-    link_add = models.URLField(max_length=500, verbose_name='Ссылка на статью', blank=True, null=True)
     feed_not = models.BooleanField(default=False, verbose_name='Не отправлять в соц сети')
 
     def __str__(self):
