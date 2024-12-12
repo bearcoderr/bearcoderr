@@ -82,10 +82,9 @@ class news(models.Model):
     category = models.ForeignKey('newsCategory', on_delete=models.SET_NULL, verbose_name='Категория', blank=True, null=True)
 
     ## Мини пост для соц сетей ##
-    img_social = models.ImageField(upload_to='photos/news/', verbose_name='Миниатюра изображения', blank=True, null=True)
-    text_social = RichTextField(verbose_name='Контент поста', max_length=500, blank=True, null=True)
     text_twitter = RichTextField(verbose_name='Контент твита', max_length=200, blank=True, null=True)
-    feed_not = models.BooleanField(default=False, verbose_name='Не отправлять в соц сети')
+
+
 
     def __str__(self):
         return self.titlenews
