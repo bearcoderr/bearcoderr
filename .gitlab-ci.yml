@@ -47,7 +47,7 @@ deploy-jobs:
   needs:
     - migrate-jobs
   only:
-    - main
+    - develop
 
 # Стейдж для логов контейнеров
 logs-jobs:
