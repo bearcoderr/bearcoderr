@@ -19,12 +19,14 @@ build-jobs:
   only:
     - develop
 
-# Стейдж для миграций базы данных
+# Стейдж для создания и применения миграций базы данных
 migrate-jobs:
   stage: migrate
   script:
+    - echo "Создание миграций Django..."
+    - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py makemigrations --noinput
     - echo "Применение миграций Django..."
-    - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py migrate
+    - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py migrate --noinput
     - echo "Миграции завершены!"
   needs:
     - build-jobs
