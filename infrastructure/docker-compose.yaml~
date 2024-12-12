@@ -5,9 +5,8 @@ services:
     build:
       context: ..
       dockerfile: infrastructure/Dockerfile
-    container_name: bearcoder-web  # Имя для контейнера web
-    volumes:
-      - C:\Users\aleks\OneDrive\Рабочий стол\Django\bearcoderr\bearcoderr\api\:/app/api
+    container_name: bearcoder-web
+    
     env_file:
       - .env
     environment:
@@ -36,14 +35,15 @@ services:
     ports:
       - 8001:8000
 
-
   db:
     image: postgres:16-alpine
-    container_name: bearcoder-db  # Имя для контейнера PostgreSQL
+    container_name: bearcoder-db
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Хранение данных вне контейнера
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 10s
@@ -52,7 +52,7 @@ services:
 
   redis:
     image: redis:7-alpine
-    container_name: bearcoder-redis  # Имя для контейнера Redis
+    container_name: bearcoder-redis
     ports:
       - 6379:6379
 
@@ -60,7 +60,7 @@ services:
     build:
       context: ..
       dockerfile: infrastructure/Dockerfile
-    container_name: bearcoder-celery  # Имя для контейнера Celery
+    container_name: bearcoder-celery
     command: poetry run celery -A src.config.celery worker --loglevel=info
     env_file:
       - .env
