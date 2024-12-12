@@ -26,8 +26,9 @@ migrate-jobs:
     - echo "Установка зависимостей..."
     - docker-compose -f infrastructure/docker-compose.yaml run --rm web bash -c "poetry install"
     - echo "Создание миграций..."
-    - docker-compose -f infrastructure/docker-compose.yaml run web poetry run python manage.py makemigrations
-    - docker-compose -f infrastructure/docker-compose.yaml run web poetry run python manage.py migrate
+    - docker-compose -f infrastructure/docker-compose.yaml run --rm web bash -c "poetry run python manage.py makemigrations models --noinput"
+    - echo "Применение миграций..."
+    - docker-compose -f infrastructure/docker-compose.yaml run --rm web bash -c "poetry run python manage.py migrate models"
   needs:
     - build-jobs
   only:
