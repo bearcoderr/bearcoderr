@@ -26,11 +26,11 @@ migrate-jobs:
     - echo "Очистка старых миграций Django..."
     - docker-compose -f infrastructure/docker-compose.yaml run --rm web bash -c "find ./src/models/migrations/ -type f ! -name '__init__.py' -delete"
 
-    - echo "Создание миграций Django..."
-    - docker-compose -f infrastructure/docker-compose.yaml run --rm web bash -c "poetry run python manage.py makemigrations --noinput"
+    - echo "Создание новых миграций Django..."
+    - docker-compose -f infrastructure/docker-compose.yaml run --rm web bash -c "poetry run python manage.py makemigrations models --noinput"
 
     - echo "Применение миграций Django..."
-    - docker-compose -f infrastructure/docker-compose.yaml run --rm web bash -c "poetry run python manage.py migrate --noinput"
+    - docker-compose -f infrastructure/docker-compose.yaml run --rm web bash -c "poetry run python manage.py migrate models --noinput"
 
     - echo "Миграции завершены!"
   needs:
