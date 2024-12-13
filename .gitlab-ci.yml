@@ -28,8 +28,9 @@ build-jobs:
 deploy-jobs:
   stage: deploy
   script:
-    - echo "Деплой новых контейнеров..."
-    - docker-compose -f infrastructure/docker-compose.yaml up -d
+    - echo "Деплой новых изменений..."
+    - docker-compose -f infrastructure/docker-compose.yaml up -d --no-build
+    - echo "Обновлены контейнеры без пересоздания образов."
     - echo "Проверка состояния контейнеров после деплоя..."
     - docker ps -a
     - echo "Docker система:"
@@ -38,6 +39,7 @@ deploy-jobs:
     - migrate-jobs
   only:
     - develop
+
 
 # Стейдж для миграций базы данных
 migrate-jobs:
