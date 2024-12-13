@@ -8,12 +8,12 @@ stages:
 fetch-code:
   stage: fetch-code
   script:
-    - echo "Удаление старой версии проекта..."
+    - echo "Удаляем старую папку bearcoderr..."
     - rm -rf ./bearcoderr
-    - echo "Клонирование свежего кода из GitLab..."
-    - git clone https://gitlab+deploy-token-6716584:gldt-2aLUUuThX-DDeJb1uCCt@gitlab.com/bearcoder1/bearcoderr.git ./bearcoderr || (echo "Ошибка клонирования" && exit 1)
-    - pwd
-    - ls -l
+    - echo "Клонируем код..."
+    - git clone https://gitlab+deploy-token-6716584:gldt-2aLUUuThX-DDeJb1uCCt@gitlab.com/bearcoder1/bearcoderr.git ./bearcoderr
+    - cd ./bearcoderr/api
+    - ls -la
   only:
     - develop
 
