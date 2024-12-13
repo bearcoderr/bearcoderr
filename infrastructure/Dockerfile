@@ -4,7 +4,7 @@ WORKDIR /app
 
 RUN apt-get update
 
-COPY ../pyproject.toml ../poetry.lock  ./
+COPY ../pyproject.toml ../poetry.lock ./
 
 RUN pip install poetry
 
@@ -17,5 +17,5 @@ COPY ../api ./api
 # Указываем рабочую директорию для Django
 WORKDIR /app/api
 
-# Команда для запуска сервера
-CMD ["poetry", "run", "python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Команда для запуска сервера Django с миграцией
+CMD ["sh", "-c", "poetry run python manage.py makemigrations --no-input && poetry run python manage.py migrate --no-input && poetry run python manage.py runserver 0.0.0.0:8000"]
