@@ -82,6 +82,7 @@ class news(models.Model):
     category = models.ForeignKey('newsCategory', on_delete=models.SET_NULL, verbose_name='Категория', blank=True, null=True)
 
     ## Мини пост для соц сетей ##
+    text_twitter = RichTextField(verbose_name='Контент твита', max_length=200, blank=True, null=True)
 
 
 
