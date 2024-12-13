@@ -6,7 +6,8 @@ services:
       context: ..
       dockerfile: infrastructure/Dockerfile
     container_name: bearcoder-web
-
+    volumes:
+      - C:\Users\aleks\OneDrive\Рабочий стол\Django\bearcoderr\bearcoderr\api:/api
     env_file:
       - .env
     environment:
@@ -42,8 +43,6 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-    volumes:
-      - postgres_data:/var/lib/postgresql/data  # Хранение данных вне контейнера
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 10s
