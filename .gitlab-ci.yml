@@ -12,6 +12,8 @@ fetch-code:
     - rm -rf ./bearcoderr
     - echo "Клонирование свежего кода из GitLab..."
     - git clone https://gitlab+deploy-token-6716584:gldt-2aLUUuThX-DDeJb1uCCt@gitlab.com/bearcoder1/bearcoderr.git ./bearcoderr
+    - pwd
+    - ls -l
   only:
     - develop
 
