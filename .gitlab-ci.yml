@@ -21,13 +21,26 @@ build-jobs:
   only:
     - develop
 
-# Стейдж для миграций базы данных
+# Стейдж для миграции базы данных
 migrate-jobs:
   stage: migrate
   script:
+    - echo "Удаляем старые volumes..."
+    - docker-compose -f infrastructure/docker-compose.yaml down -v
+
+    - echo "Сборка образов и запуск контейнеров для проверки..."
+    - docker-compose -f infrastructure/docker-compose.yaml build
+    - docker-compose -f infrastructure/docker-compose.yaml up -d
+
+    # Ждём, пока база данных полностью запустится
+    - echo "Ждём, пока база данных станет доступной..."
+    - sleep 10
+
+    # Применяем миграции Django
     - echo "Применение миграций Django..."
     - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py makemigrations
     - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py migrate
+
     - echo "Миграции завершены!"
   needs:
     - build-jobs
@@ -48,7 +61,6 @@ deploy-jobs:
     - migrate-jobs
   only:
     - develop
-
 
 # Стейдж для логов контейнеров
 logs-jobs:
