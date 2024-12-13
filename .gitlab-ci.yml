@@ -4,15 +4,12 @@ stages:
   - deploy
   - logs
 
-
 # Стейдж сборки Docker образов
 build-jobs:
   stage: build
   script:
-    - echo "Очистка старых Docker данных для освобождения места..."
-    - docker system prune -af --volumes
-    - echo "Сборка образов..."
-    - docker-compose -f infrastructure/docker-compose.yaml build
+    - echo "Сборка образов с обновлением только изменений..."
+    - docker-compose -f infrastructure/docker-compose.yaml build --no-cache web
     - echo "Запуск контейнеров для проверки..."
     - docker-compose -f infrastructure/docker-compose.yaml up -d
     - echo "Проверка состояния контейнеров после сборки..."
@@ -39,8 +36,8 @@ migrate-jobs:
 deploy-jobs:
   stage: deploy
   script:
-    - echo "Деплой новых контейнеров..."
-    - docker-compose -f infrastructure/docker-compose.yaml up -d
+    - echo "Обновление контейнеров без полного пересоздания..."
+    - docker-compose -f infrastructure/docker-compose.yaml up -d --no-recreate
     - echo "Проверка состояния контейнеров после деплоя..."
     - docker ps -a
     - echo "Docker система:"
@@ -49,7 +46,6 @@ deploy-jobs:
     - migrate-jobs
   only:
     - develop
-
 
 # Стейдж для логов контейнеров
 logs-jobs:
