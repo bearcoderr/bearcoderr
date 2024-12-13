@@ -6,8 +6,6 @@ services:
       context: ..
       dockerfile: infrastructure/Dockerfile
     container_name: bearcoder-web
-    volumes:
-      - /var/lib/docker/volumes/runner-t3q5egkx-project-64911257-concurrent-0-cache-c33bcaa1fd2c77edfc3893b41966cea8/_data/bearcoder1/bearcoderr/api:/app/api
     env_file:
       - .env
     environment:
