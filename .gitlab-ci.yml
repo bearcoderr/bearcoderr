@@ -34,26 +34,22 @@ migrate-jobs:
     - echo "Запуск контейнеров..."
     - docker-compose -f infrastructure/docker-compose.yaml up -d
 
-    - echo "Ожидание запуска базы данных..."
-    - sleep 15
-
-    - echo "Проверка контейнеров..."
-    - docker-compose -f infrastructure/docker-compose.yaml ps
-
-    - echo "Применение миграций..."
+    # Ожидание полной инициализации контейнеров
+    - echo "Ожидание запуска контейнеров..."
     - |
-      if docker-compose -f infrastructure/docker-compose.yaml exec web poetry run python manage.py makemigrations --check; then
-        echo "Миграции успешно проверены."
-      else
-        echo "Ошибка в проверке миграций."; exit 1
-      fi
+      until docker-compose -f infrastructure/docker-compose.yaml ps | grep bearcoder-web | grep "Up"; do
+        echo "Контейнер bearcoder-web ещё не запущен, ждём..."
+        sleep 5
+      done
 
+    - echo "Контейнер bearcoder-web запущен, применяем миграции..."
+    - docker-compose -f infrastructure/docker-compose.yaml exec web poetry run python manage.py makemigrations --check
     - docker-compose -f infrastructure/docker-compose.yaml exec web poetry run python manage.py migrate
-
   needs:
     - build-jobs
   only:
     - develop
+
 
 # Стейдж деплоя контейнеров
 deploy-jobs:
