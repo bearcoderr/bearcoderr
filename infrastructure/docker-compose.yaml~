@@ -6,8 +6,7 @@ services:
       context: ..
       dockerfile: infrastructure/Dockerfile
     container_name: bearcoder-web
-    volumes:
-      - /builds/bearcoder1/bearcoderr/api:/app/api
+
     env_file:
       - .env
     environment:
