@@ -82,9 +82,6 @@ class news(models.Model):
     category = models.ForeignKey('newsCategory', on_delete=models.SET_NULL, verbose_name='Категория', blank=True, null=True)
 
     ## Мини пост для соц сетей ##
-    imgPostMini = models.ImageField(upload_to='photos/news/', verbose_name='Изображение мини поста', blank=True, null=True)
-    contentPostMini = models.TextField(verbose_name='Контент поста', max_length=500, blank=True, null=True)
-    text_twitter = models.TextField(verbose_name='Текст для твиттера', max_length=200, blank=True, null=True)
 
 
     def __str__(self):
