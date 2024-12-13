@@ -1,21 +1,8 @@
 stages:
-  - fetch-code
   - build
   - migrate
   - deploy
   - logs
-
-fetch-code:
-  stage: fetch-code
-  script:
-    - echo "Удаляем старую папку bearcoderr..."
-    - rm -rf ./bearcoderr
-    - echo "Клонируем код..."
-    - git clone https://gitlab+deploy-token-6716584:gldt-2aLUUuThX-DDeJb1uCCt@gitlab.com/bearcoder1/bearcoderr.git ./bearcoderr
-    - cd ./bearcoderr/api
-    - ls -la
-  only:
-    - develop
 
 
 # Стейдж сборки Docker образов
@@ -40,8 +27,8 @@ migrate-jobs:
   stage: migrate
   script:
     - echo "Применение миграций Django..."
-    - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py makemigrations
-    - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py migrate
+    - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py makemigrations --no-input
+    - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py migrate --no-input
     - echo "Миграции завершены!"
   needs:
     - build-jobs
