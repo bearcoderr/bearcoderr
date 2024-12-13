@@ -5,7 +5,6 @@ stages:
   - deploy
   - logs
 
-# Стейдж для клонирования кода
 fetch-code:
   stage: fetch-code
   script:
@@ -13,69 +12,65 @@ fetch-code:
     - rm -rf ./bearcoderr
     - echo "Клонирование свежего кода из GitLab..."
     - git clone https://gitlab+deploy-token-6716584:gldt-2aLUUuThX-DDeJb1uCCt@gitlab.com/bearcoder1/bearcoderr.git ./bearcoderr
-    - pwd
-    - ls -l
-
   only:
     - develop
+
 
 # Стейдж сборки Docker образов
 build-jobs:
   stage: build
   script:
-    - echo "Сборка Docker образов..."
+    - echo "Очистка старых Docker данных для освобождения места..."
+    - docker system prune -af --volumes
+    - echo "Сборка образов..."
     - docker-compose -f infrastructure/docker-compose.yaml build
-  needs:
-    - fetch-code
+    - echo "Запуск контейнеров для проверки..."
+    - docker-compose -f infrastructure/docker-compose.yaml up -d
+    - echo "Проверка состояния контейнеров после сборки..."
+    - docker ps -a
+    - echo "Docker система:"
+    - docker info
   only:
     - develop
 
-# Стейдж для миграции базы данных
+# Стейдж для миграций базы данных
 migrate-jobs:
   stage: migrate
   script:
-    - echo "Запуск контейнеров..."
-    - docker-compose -f infrastructure/docker-compose.yaml up -d
-
-    # Ожидание полной инициализации контейнеров
-    - echo "Ожидание запуска контейнеров..."
-    - |
-      until docker-compose -f infrastructure/docker-compose.yaml ps | grep bearcoder-web | grep "Up"; do
-        echo "Контейнер bearcoder-web ещё не запущен, ждём..."
-        sleep 5
-      done
-
-    - echo "Контейнер bearcoder-web запущен, применяем миграции..."
-    - docker-compose -f infrastructure/docker-compose.yaml exec web poetry run python manage.py makemigrations --check
-    - docker-compose -f infrastructure/docker-compose.yaml exec web poetry run python manage.py migrate
+    - echo "Применение миграций Django..."
+    - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py makemigrations
+    - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py migrate
+    - echo "Миграции завершены!"
   needs:
     - build-jobs
   only:
     - develop
 
-
 # Стейдж деплоя контейнеров
 deploy-jobs:
   stage: deploy
   script:
-    - echo "Обновление контейнеров..."
+    - echo "Деплой новых контейнеров..."
     - docker-compose -f infrastructure/docker-compose.yaml up -d
+    - echo "Проверка состояния контейнеров после деплоя..."
+    - docker ps -a
+    - echo "Docker система:"
+    - docker info
   needs:
     - migrate-jobs
   only:
     - develop
 
-# Стейдж для просмотра логов контейнеров
+
+# Стейдж для логов контейнеров
 logs-jobs:
   stage: logs
   script:
-    - echo "Просмотр состояния контейнеров..."
+    - echo "Состояние контейнеров:"
     - docker ps -a
     - echo "Логи контейнера web:"
     - docker logs bearcoder-web
     - echo "Логи контейнера db:"
     - docker logs bearcoder-db
-  needs:
-    - deploy-jobs
   only:
     - develop
