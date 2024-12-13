@@ -35,11 +35,21 @@ migrate-jobs:
     - docker-compose -f infrastructure/docker-compose.yaml up -d
 
     - echo "Ожидание запуска базы данных..."
-    - sleep 10
+    - sleep 15
+
+    - echo "Проверка контейнеров..."
+    - docker-compose -f infrastructure/docker-compose.yaml ps
 
     - echo "Применение миграций..."
-    - docker-compose -f infrastructure/docker-compose.yaml exec web poetry run python manage.py makemigrations
+    - |
+      if docker-compose -f infrastructure/docker-compose.yaml exec web poetry run python manage.py makemigrations --check; then
+        echo "Миграции успешно проверены."
+      else
+        echo "Ошибка в проверке миграций."; exit 1
+      fi
+
     - docker-compose -f infrastructure/docker-compose.yaml exec web poetry run python manage.py migrate
+
   needs:
     - build-jobs
   only:
@@ -49,14 +59,14 @@ migrate-jobs:
 deploy-jobs:
   stage: deploy
   script:
-    - echo "Перезапуск контейнеров с актуальным кодом..."
+    - echo "Обновление контейнеров..."
     - docker-compose -f infrastructure/docker-compose.yaml up -d
   needs:
     - migrate-jobs
   only:
     - develop
 
-# Стейдж для просмотра логов
+# Стейдж для просмотра логов контейнеров
 logs-jobs:
   stage: logs
   script:
