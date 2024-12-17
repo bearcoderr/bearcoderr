@@ -28,17 +28,24 @@ build-jobs:
 deploy-jobs:
   stage: deploy
   script:
-    - echo "Очистка базы данных перед деплоем..."
-    - docker-compose -f infrastructure/docker-compose.yaml exec -T bearcoder-db psql -U bearcoderr_user -d bearcoderr -c "DROP SCHEMA public CASCADE;"
-    - docker-compose -f infrastructure/docker-compose.yaml exec -T bearcoder-db psql -U bearcoderr_user -d bearcoderr -c "CREATE SCHEMA public;"
-    - echo "База данных очищена!"
-
     - echo "Деплой новых изменений..."
     - docker-compose -f infrastructure/docker-compose.yaml up -d --no-build
     - echo "Обновлены контейнеры без пересоздания образов."
 
   needs:
     - build-jobs
+  only:
+    - develop
+
+clean-db:
+  stage: deploy
+  script:
+    - echo "Очистка базы данных перед деплоем..."
+    - docker-compose -f infrastructure/docker-compose.yaml exec -T bearcoder-db psql -U bearcoderr_user -d bearcoderr -c "DROP SCHEMA public CASCADE;"
+    - docker-compose -f infrastructure/docker-compose.yaml exec -T bearcoder-db psql -U bearcoderr_user -d bearcoderr -c "CREATE SCHEMA public;"
+    - echo "База данных очищена!"
+  needs:
+    - deploy-jobs
   only:
     - develop
 
