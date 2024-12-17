@@ -7,7 +7,7 @@ from django.http import JsonResponse
 
 
 class NewsAdmin(admin.ModelAdmin):
-    
+    prepopulated_fields = {'slugnews': ('titlenews',)}
     list_display = ['titlenews', 'dataNews']
 
     def get_urls(self):

@@ -85,6 +85,7 @@ class news(models.Model):
     imgPostMini = models.ImageField(upload_to='photos/news/', verbose_name='Изображение мини поста', blank=True, null=True)
     contentPostMini = models.TextField(verbose_name='Контент поста', max_length=500, blank=True, null=True)
     text_twitter = models.TextField(verbose_name='Текст для твиттера', max_length=250, blank=True, null=True)
+    feed_or_not = models.BooleanField(default=False, verbose_name='Опубликовать в ленте', blank=True, null=True)
 
 
     def __str__(self):
