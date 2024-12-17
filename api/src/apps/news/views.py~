@@ -170,7 +170,7 @@ class NewsFeed(Feed):
         return item.titlenews
 
     def item_description(self, item):
-        return item.text_twitter[:250]  # Краткий анонс новости
+        return item.text_twitter[:200]  # Краткий анонс новости
 
     def item_link(self, item):
         return f"http://localhost:8001/news/{item.slugnews}/" if hasattr(item, 'slugnews') and item.slugnews else 'http://localhost:8001/'
