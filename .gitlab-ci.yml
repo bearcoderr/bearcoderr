@@ -1,6 +1,7 @@
 stages:
   - build
   - deploy
+  - migrate
 
 # Stage сборки Docker образов
 build-jobs:
@@ -28,5 +29,18 @@ deploy-jobs:
     - echo "Обновлены контейнеры без пересоздания образов."
   needs:
     - build-jobs
+  only:
+    - develop
+
+# Stage миграции базы данных
+migrate-jobs:
+  stage: migrate
+  script:
+    - echo "Применение миграций Django к базе данных..."
+    - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py makemigrations --no-input
+    - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py migrate --no-input --database=default
+    - echo "Миграции завершены!"
+  needs:
+    - deploy-jobs
   only:
     - develop
