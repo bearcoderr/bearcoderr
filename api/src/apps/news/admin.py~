@@ -7,6 +7,7 @@ from django.http import JsonResponse
 
 
 class NewsAdmin(admin.ModelAdmin):
+    
     list_display = ['titlenews', 'dataNews']
 
     def get_urls(self):
@@ -41,7 +42,7 @@ class NewsAdmin(admin.ModelAdmin):
                             dataNews=row.get('dataNews'),
                             countView=int(row.get('countView', 0)),
                             category=category,
-                            text_twitter=row.get('text_twitter')
+                            text_twitter=row.get['text_twitter']
                         )
 
                     except newsCategory.DoesNotExist:
