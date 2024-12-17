@@ -1,9 +1,9 @@
 stages:
   - build
   - migrate
+  - clean_db
   - deploy
   - logs
-
 
 # Стейдж сборки Docker образов
 build-jobs:
@@ -22,7 +22,32 @@ build-jobs:
   only:
     - develop
 
+# Стейдж для миграции базы данных
+migrate-jobs:
+  stage: migrate
+  script:
+    - echo "Применение миграций Django с проверкой базы данных..."
+    - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py makemigrations --no-input
+    - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py migrate --no-input --database=default
+    - echo "Миграции завершены!"
+  needs:
+    - build-jobs
+  only:
+    - develop
 
+# Стейдж очистки базы данных
+clean_db:
+  stage: clean_db
+  script:
+    - echo "Очистка базы данных перед деплоем..."
+    - docker-compose -f infrastructure/docker-compose.yaml exec -T bearcoder-db psql -U bearcoderr_user -d bearcoderr -c "DROP SCHEMA public CASCADE;"
+    - docker-compose -f infrastructure/docker-compose.yaml exec -T bearcoder-db psql -U bearcoderr_user -d bearcoderr -c "CREATE SCHEMA public;"
+    - echo "База данных очищена!"
+
+  needs:
+    - migrate-jobs
+  only:
+    - develop
 
 # Стейдж деплоя контейнеров
 deploy-jobs:
@@ -36,21 +61,21 @@ deploy-jobs:
     - echo "Docker система:"
     - docker info
   needs:
-    - migrate-jobs
+    - clean_db
   only:
     - develop
 
-
-# Стейдж для миграций базы данных
-migrate-jobs:
-  stage: migrate
+# Стейдж для импорта базы данных из дампа
+import_db:
+  stage: deploy
   script:
-    - echo "Применение миграций Django с проверкой базы данных..."
-    - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py makemigrations --no-input
-    - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py migrate --no-input --database=default
-    - echo "Миграции завершены!"
+    - echo "Импорта базы данных из дампа..."
+    - docker cp bearcoder-db:/mnt/data/bearcoderr_database.dump ./bearcoderr_database.dump
+    - docker exec -i bearcoder-db psql -U bearcoderr_user -d bearcoderr < ./bearcoderr_database.dump
+    - echo "Дамп базы данных успешно импортирован!"
+
   needs:
-    - build-jobs
+    - deploy-jobs
   only:
     - develop
 
