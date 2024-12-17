@@ -1,8 +1,9 @@
 stages:
   - build
-  - migrate
   - clean_db
+  - migrate
   - deploy
+  - import_db
   - logs
 
 # Стейдж сборки Docker образов
@@ -22,30 +23,31 @@ build-jobs:
   only:
     - develop
 
-# Стейдж для миграции базы данных
-migrate-jobs:
-  stage: migrate
-  script:
-    - echo "Применение миграций Django с проверкой базы данных..."
-    - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py makemigrations --no-input
-    - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py migrate --no-input --database=default
-    - echo "Миграции завершены!"
-  needs:
-    - build-jobs
-  only:
-    - develop
-
 # Стейдж очистки базы данных
 clean_db:
   stage: clean_db
   script:
-    - echo "Очистка базы данных перед деплоем..."
+    - echo "Очистка базы данных перед миграциями..."
     - docker-compose -f infrastructure/docker-compose.yaml exec -T bearcoder-db psql -U bearcoderr_user -d bearcoderr -c "DROP SCHEMA public CASCADE;"
     - docker-compose -f infrastructure/docker-compose.yaml exec -T bearcoder-db psql -U bearcoderr_user -d bearcoderr -c "CREATE SCHEMA public;"
     - echo "База данных очищена!"
 
   needs:
-    - migrate-jobs
+    - build-jobs
+  only:
+    - develop
+
+# Стейдж для миграции базы данных
+migrate-jobs:
+  stage: migrate
+  script:
+    - echo "Применение миграций Django к базе данных..."
+    - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py makemigrations --no-input
+    - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py migrate --no-input --database=default
+    - echo "Миграции завершены!"
+
+  needs:
+    - clean_db
   only:
     - develop
 
@@ -56,12 +58,8 @@ deploy-jobs:
     - echo "Деплой новых изменений..."
     - docker-compose -f infrastructure/docker-compose.yaml up -d --no-build
     - echo "Обновлены контейнеры без пересоздания образов."
-    - echo "Проверка состояния контейнеров после деплоя..."
-    - docker ps -a
-    - echo "Docker система:"
-    - docker info
   needs:
-    - clean_db
+    - migrate-jobs
   only:
     - develop
 
