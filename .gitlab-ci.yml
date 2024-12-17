@@ -1,7 +1,7 @@
 stages:
   - build
-  - migrate
   - deploy
+  - migrate
   - import_db
   - logs
 
@@ -22,19 +22,7 @@ build-jobs:
   only:
     - develop
 
-# Стейдж для миграции базы данных
-migrate-jobs:
-  stage: migrate
-  script:
-    - echo "Применение миграций Django к базе данных..."
-    - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py makemigrations --no-input
-    - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py migrate --no-input --database=default
-    - echo "Миграции завершены!"
 
-  needs:
-    - build-jobs
-  only:
-    - develop
 
 # Стейдж деплоя контейнеров и очистки базы данных
 deploy-jobs:
@@ -53,6 +41,21 @@ deploy-jobs:
     - migrate-jobs
   only:
     - develop
+
+# Стейдж для миграции базы данных
+migrate:
+  stage: deploy
+  script:
+    - echo "Применение миграций Django к базе данных..."
+    - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py makemigrations --no-input
+    - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py migrate --no-input --database=default
+    - echo "Миграции завершены!"
+
+  needs:
+    - build-jobs
+  only:
+    - develop
+
 
 # Стейдж для импорта базы данных из дампа
 import_db:
