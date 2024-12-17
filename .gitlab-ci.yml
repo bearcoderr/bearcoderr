@@ -1,10 +1,6 @@
 stages:
   - build
   - deploy
-  - clean_db
-  - migrate
-  - import_db
-  - logs
 
 # Stage сборки Docker образов
 build-jobs:
@@ -32,61 +28,5 @@ deploy-jobs:
     - echo "Обновлены контейнеры без пересоздания образов."
   needs:
     - build-jobs
-  only:
-    - develop
-
-# Stage очистки базы данных
-clean-db:
-  stage: clean_db
-  script:
-    - echo "Ожидание запуска контейнера базы данных..."
-    - docker-compose -f infrastructure/docker-compose.yaml ps
-    - docker-compose -f infrastructure/docker-compose.yaml exec -T bearcoder-db bash -c "while ! pg_isready -h localhost -p 5432; do echo 'Waiting for database to start...'; sleep 5; done"
-    - echo "Очистка базы данных..."
-    - docker-compose -f infrastructure/docker-compose.yaml exec -T bearcoder-db psql -U bearcoderr_user -d bearcoderr -c "DROP SCHEMA public CASCADE;"
-
-  needs:
-    - deploy-jobs
-  only:
-    - develop
-
-# Stage миграции базы данных
-migrate:
-  stage: migrate
-  script:
-    - echo "Применение миграций Django к базе данных..."
-    - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py makemigrations --no-input
-    - docker-compose -f infrastructure/docker-compose.yaml run --rm web poetry run python manage.py migrate --no-input --database=default
-    - echo "Миграции завершены!"
-  needs:
-    - clean-db
-  only:
-    - develop
-
-# Stage импорта базы данных из дампа
-import_db:
-  stage: import_db
-  script:
-    - echo "Импорта базы данных из дампа..."
-    - echo "Копирование дампа базы данных из контейнера..."
-    - docker cp bearcoder-db:/mnt/data/bearcoderr_database.sql ./bearcoderr_database.sql
-    - echo "Импорта дампа в базу данных..."
-    - docker exec -i bearcoder-db psql -U bearcoderr_user -d bearcoderr < ./bearcoderr_database.sql
-    - echo "Дамп базы данных успешно импортирован!"
-  needs:
-    - migrate
-  only:
-    - develop
-
-# Stage для логов контейнеров
-logs-jobs:
-  stage: logs
-  script:
-    - echo "Состояние контейнеров:"
-    - docker ps -a
-    - echo "Логи контейнера web:"
-    - docker logs bearcoder-web
-    - echo "Логи контейнера db:"
-    - docker logs bearcoder-db
   only:
     - develop
