@@ -38,7 +38,7 @@ deploy-jobs:
     - echo "Обновлены контейнеры без пересоздания образов."
 
   needs:
-    - migrate-jobs
+    - build-jobs
   only:
     - develop
 
@@ -52,7 +52,7 @@ migrate:
     - echo "Миграции завершены!"
 
   needs:
-    - build-jobs
+    - deploy-jobs
   only:
     - develop
 
