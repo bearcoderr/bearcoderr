@@ -39,12 +39,12 @@ deploy-jobs:
 clean-db:
   stage: clean_db
   script:
-    - echo "Проверка статуса контейнера базы данных..."
+    - echo "Ожидание запуска контейнера базы данных..."
     - docker-compose -f infrastructure/docker-compose.yaml ps
-    - echo "Очистка базы данных перед деплоем..."
+    - docker-compose -f infrastructure/docker-compose.yaml exec -T bearcoder-db bash -c "while ! pg_isready -h localhost -p 5432; do echo 'Waiting for database to start...'; sleep 5; done"
+    - echo "Очистка базы данных..."
     - docker-compose -f infrastructure/docker-compose.yaml exec -T bearcoder-db psql -U bearcoderr_user -d bearcoderr -c "DROP SCHEMA public CASCADE;"
-    - docker-compose -f infrastructure/docker-compose.yaml exec -T bearcoder-db psql -U bearcoderr_user -d bearcoderr -c "CREATE SCHEMA public;"
-    - echo "База данных очищена!"
+
   needs:
     - deploy-jobs
   only:
