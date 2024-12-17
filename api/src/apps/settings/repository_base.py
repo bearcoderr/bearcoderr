@@ -12,5 +12,8 @@ class BaseSettingsRepository(BaseSettingsRepositoryAbs):
             buttonHeader=settings.buttonHeader,
             copyText=settings.copyText,
             admin_email=settings.admin_email,
-            menu_settings=[MenuSettingsDTO(nameLink=menu.nameLink, link=menu.link) for menu in MenuSite.objects.all()]
+            menu_settings=[
+                MenuSettingsDTO(nameLink=menu.nameLink, link=menu.link)
+                for menu in MenuSite.objects.all()
+            ]
         )

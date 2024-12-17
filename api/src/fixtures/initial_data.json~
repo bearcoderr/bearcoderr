@@ -1,0 +1,11 @@
+[
+    {
+        "model": "settings.settings",
+        "pk": 1,
+        "fields": {
+            "titleHome": "SuperApp Home Page",
+            "description": "Default Description for your awesome site",
+            "footer_text": "© 2024 MySite, All Rights Reserved"
+        }
+    }
+]

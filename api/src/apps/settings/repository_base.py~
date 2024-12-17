@@ -1,0 +1,33 @@
+from src.models.settings import Settings, MenuSite
+from src.domain.base_settings.dto import BaseSettingsDTO, MenuSettingsDTO
+from src.domain.base_settings.repository_abs import BaseSettingsRepositoryAbs
+
+class BaseSettingsRepository(BaseSettingsRepositoryAbs):
+    def get_settings(self) -> BaseSettingsDTO:
+        settings = Settings.objects.first()
+
+        if not settings:
+            # Верните объект с дефолтными значениями, если записи нет
+            return BaseSettingsDTO(
+                titleHome="Default Title",
+                imgHome="default_img.jpg",
+                favSite="https://example.com",
+                buttonHeader="Click Me",
+                copyText="© 2024 Your Company",
+                admin_email="admin@example.com",
+                menu_settings=[]
+            )
+
+        # Если настройки есть, верните данные из базы
+        return BaseSettingsDTO(
+            titleHome=settings.titleHome,
+            imgHome=settings.imgHome,
+            favSite=settings.favSite,
+            buttonHeader=settings.buttonHeader,
+            copyText=settings.copyText,
+            admin_email=settings.admin_email,
+            menu_settings=[
+                MenuSettingsDTO(nameLink=menu.nameLink, link=menu.link)
+                for menu in MenuSite.objects.all()
+            ]
+        )

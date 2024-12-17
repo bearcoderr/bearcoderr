@@ -156,14 +156,15 @@ class YandexZenFeedGenerator(Rss201rev2Feed):
 class NewsFeed(Feed):
     feed_type = YandexZenFeedGenerator
     title = "Опытный Backend-разработчик Алексей Ачкасов"
-    link = 'http://localhost:8001/'# Используем настройку из settings
-    description = "Описание RSS-ленты"
+    link = 'https://bearcoder.ru/'  # Используем настройку из settings
+    description = "RSS-лента содержит последние новости о разработке, программировании и IT-трендах. Обновления включают статьи, обзоры и полезный контент для разработчиков и специалистов в сфере технологий."
 
     get_list_news_feed = NewsRepository()
     news_services = NewsService(get_list_news_feed)
 
     def items(self):
-        return self.news_services.get_list_news_feed()
+        # Возвращаем только те статьи, у которых есть текст в блоке text_twitter
+        return [item for item in self.news_services.get_list_news_feed() if item.text_twitter]
 
     def item_title(self, item):
         return item.titlenews
@@ -173,7 +174,6 @@ class NewsFeed(Feed):
 
     def item_link(self, item):
         return f"http://localhost:8001/news/{item.slugnews}/" if hasattr(item, 'slugnews') and item.slugnews else 'http://localhost:8001/'
-
 
     def item_extra_kwargs(self, item):
         return {
