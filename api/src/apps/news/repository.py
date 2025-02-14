@@ -223,6 +223,7 @@ class NewsRepository(NewsRepositoryAbs):
                 slugnews=new.slugnews,
                 contentnews=new.contentnews,
                 text_twitter=new.text_twitter,
+                feed_or_not=new.feed_or_not,
             )
             for new in news_feed_list
         ]

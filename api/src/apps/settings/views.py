@@ -7,13 +7,17 @@ from src.apps.services.repository import ServicesRepository
 
 from src.domain.settings.dto import FormSettingsDTO
 from .forms import formsHome
-from .tasks import send_email_task
+from .tasks import send_email
+import threading
 
 # Подключаем Блог
 from src.domain.news.services import NewsService
 from src.apps.news.repository import NewsRepository
 
-
+# Подключаем Работы
+from src.apps.worck.repository import WorkRepository
+from src.domain.worck.services import WorkService
+from django.http import JsonResponse
 
 class ViewHomes(View):
 
@@ -34,12 +38,24 @@ class ViewHomes(View):
 
         form = formsHome()
 
+        # Подключаем категории работ
+        work_repository = WorkRepository()
+        work_service = WorkService(work_repository=work_repository)
+        work_categories = work_service.get_work_category_list()
+        
+        # Все превью работ
+
+        # Получаем все превью работ
+        work_previews = work_service.get_work_all()
+
         # Получаем настройки через сервис
         context = {
             'form': form,
             'settings': settings_services.get_settings(),
             'services': services_services.get_services_list(),
-            'news_list': news_services.get_news_list()[:3]
+            'news_list': news_services.get_news_list()[:3],
+            'work_categories': work_categories,
+            'work_previews': work_previews
         }
 
         # Рендерим шаблон с переданным контекстом
@@ -91,6 +107,16 @@ class ThanksView(View):
 
 class sendEmail(View):
     def get(self, request):
-        send_email_task.apply_async(args=["bearcoderr@gmail.com"])
+        threading.Thread(target=send_email, args=("bearcoderr@gmail.com",)).start()
 
         return render(request, 'settings/index.html')
+
+
+class WorkView(View):
+    def get(self, request, work_id):
+        work_repository = WorkRepository()
+        work_service = WorkService(work_repository=work_repository)
+        work_item = work_service.get_work_item(work_id)
+
+        # Return JSON response with work item details
+        return JsonResponse(work_item.__dict__, safe=False)

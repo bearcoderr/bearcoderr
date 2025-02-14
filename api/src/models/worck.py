@@ -22,8 +22,8 @@ class GalleryWorck(models.Model):
         return f'Изображение для {self.id}'
 
     class Meta:
-        verbose_name = 'Изображение галереи'
-        verbose_name_plural = 'Изображения галереи'
+        verbose_name = 'Фото работы'
+        verbose_name_plural = 'Фото работ'
 
 class categoryWorck(models.Model):
     titleCategory = models.CharField(max_length=500, verbose_name='Название категории')
@@ -33,8 +33,8 @@ class categoryWorck(models.Model):
         return self.titleCategory
 
     class Meta:
-        verbose_name = 'Категория'
-        verbose_name_plural = 'Категории'
+        verbose_name = 'Категория работ'
+        verbose_name_plural = 'Категории работ'
 
 # Model for work site
 class WorckSite(models.Model):

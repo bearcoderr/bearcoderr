@@ -182,7 +182,7 @@
                         </nav>
                     </div>
                     <div class="copy-text">
-                        <p>{{ base_settings.copyText }}</p>
+                        <p>© <span id="current-year"></span>. {{ base_settings.copyText }}</p>
                     </div>
                 </div>
             </div>
@@ -217,6 +217,9 @@
 <!-- Подключение FancyBox -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+<script>
+  document.getElementById('current-year').textContent = new Date().getFullYear();
+</script>
 </body>
 
 </html>

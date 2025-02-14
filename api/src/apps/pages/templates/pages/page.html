@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+  <main class="site-content" id="content">
+    <!-- START: Breadcrumb Area -->
+    <section class="breadcrumb_area" data-bg-image="./assets/img/breadcrumb/breadcrumb-bg.jpg" data-bg-color="#140C1C">
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <div class="breadcrumb_content d-flex flex-column align-items-center">
+              <h2 class="title wow fadeInUp" data-wow-delay=".3s">{{ page.title }}</h2>
+              <div class="breadcrumb_navigation wow fadeInUp" data-wow-delay=".5s">
+                <span><a href="index.html">Главная</a></span>
+                <i class="far fa-long-arrow-right"></i>
+                <span class="current-item">{{ page.title }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- END: Breadcrumb Area -->
+
+    <!-- START: Blog Section -->
+    <section class="full-width tj-post-details__area">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div class="tj-post-details__container">
+              <article class="tj-single__post">
+                  <div class="tj-post__meta">
+                      <span class="tj-post__meta-item">
+                        Дата публикации: {{ page.publication_date }}
+                      </span>
+                      <span class="tj-post__meta-item">
+                        Последнее обновление: {{ page.last_updated }}
+                      </span>
+                  </div>
+                  <div class="tj-post__content">
+                   {{ page.content|safe }}
+                  </div>
+              </article>
+
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+    <!-- END: Blog Section -->
+  </main>
+
+{% endblock %}

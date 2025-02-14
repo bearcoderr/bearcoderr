@@ -9,7 +9,7 @@ COPY ../pyproject.toml ../poetry.lock  ./
 RUN pip install poetry
 
 # Устанавливаем зависимости
-RUN poetry install --no-dev
+RUN poetry install --no-interaction --no-ansi --no-root
 
 # Копируем папку api в контейнер
 COPY ../api ./api

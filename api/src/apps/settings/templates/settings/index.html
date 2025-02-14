@@ -128,16 +128,16 @@
 
 
         <!-- PORTFOLIO SECTION START -->
-        <!-- <section class="portfolio-section" id="works-section">
+        <section class="portfolio-section" id="works-section">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="section-header text-center">
-                            <h2 class="section-title wow fadeInUp" data-wow-delay=".3s">My Recent Works</h2>
-                            <p class=" wow fadeInUp" data-wow-delay=".4s">We put your ideas and thus your wishes in the
-                                form of a unique web project that inspires
-                                you
-                                and you customers.</p>
+                            <h2 class="section-title wow fadeInUp" data-wow-delay=".3s">Проекты которые сделаны мной</h2>
+                            <p class=" wow fadeInUp" data-wow-delay=".4s">Здесь вы можете увидеть мои проекты, которые
+                                отражают мою страсть к дизайну и разработке. Каждый из них – это уникальное решение,
+                                созданное с учетом современных трендов и потребностей клиентов.</p>
+
                         </div>
                     </div>
                 </div>
@@ -146,8 +146,8 @@
                     <div class="col-md-12">
                         <div class="portfolio-filter text-center wow fadeInUp" data-wow-delay=".5s">
                             <div class="button-group filter-button-group">
-                                <button data-filter="*" class="active">All</button>
-                                {% for category in category_worck %}
+                                <button data-filter="*" class="active">Все</button>
+                                {% for category in work_categories %}
                                     <button data-filter=".{{ category.slugCategory }}">{{ category.titleCategory }}</button>
                                 {% endfor %}
                                 <div class="active-bg"></div>
@@ -157,12 +157,11 @@
                         <div class="portfolio-box wow fadeInUp" data-wow-delay=".6s">
                             <div class="portfolio-sizer"></div>
                             <div class="gutter-sizer"></div>
+                            {% for worck in work_previews %}
 
-                            {% for worck in worck_site %}
-
-                                <div class="portfolio-item {% for category in worck.categoryWorckInfo.all %}{{ category.slugCategory }}{% endfor %} {{ forloop.counter }}">
+                                <div class="portfolio-item {{ worck.categoryWorckInfo }}">
                                     <div class="image-box">
-                                        <img src="{{ worck.imgWorck_thumb.url }}" alt="{{ worck.titleWorck }}">
+                                        <img src="{{ worck.imgWorck_thumb }}" alt="{{ worck.titleWorck }}">
                                     </div>
                                     <div class="content-box">
                                         <h3 class="portfolio-title">{{ worck.titleWorck }}</h3>
@@ -250,7 +249,7 @@
                     </div>
                 </div>
             </div>
-        </section> -->
+        </section>
         <!-- PORTFOLIO SECTION END -->
 
 
@@ -401,10 +400,17 @@
                                                 <textarea name="massageFormsHome" id="massageFormsHome" value="{{ form.massageFormsHome.value|default_if_none:'' }}" placeholder="Сообщение"></textarea>
                                             </div>
                                         </div>
-                                        <div class="col-12">
-                                            <div class="form_btn">
-                                                <button type="submit" class="btn tj-btn-primary">Отправить</button>
+                                        <div class="col-md-3">
+                                            <div class="form_btn d-flex flex-column">
+                                                <button type="submit" class="btn tj-btn-primary mb-3">Отправить</button>
+
                                             </div>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <p class="text-box">
+                                                Нажимая на кнопку отправить вы подтверждаете
+                                                <a href="/politika-v-otnoshenii-obrabotki-personalnyh-dannyh/" target="_blank">политику обработки персональных данных</a>.
+                                            </p>
                                         </div>
                                     </div>
                                 </form>

@@ -40,6 +40,7 @@ class CommentDTO:
     time_create: str
     post_id: int
 
+
 @dataclass
 class FeedDTO:
     imgnews: str
@@ -47,3 +48,4 @@ class FeedDTO:
     slugnews: str
     contentnews: str
     text_twitter: str
+    feed_or_not: bool

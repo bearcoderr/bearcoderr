@@ -3460,3 +3460,15 @@ body.absolute_header .breadcrumb_area {
 .funfact-item .text {
     width: 50%;
 }
+.text-box a {
+    color: white;
+    text-decoration: none;
+}
+
+.text-box a:hover {
+    color: #E3AC2B;
+}
+.text-box__none a:hover {
+    text-decoration: underline;
+    color: #fff;
+}

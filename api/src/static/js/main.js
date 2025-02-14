@@ -132,24 +132,31 @@ Description: Gerold - Personal Portfolio HTML5 Template
 		/*------------------------------------------------------
   	/  Portfolio Filter
   	/------------------------------------------------------*/
-		var $grid = $(".portfolio-box").isotope({
-			// options
-			masonry: {
-				columnWidth: ".portfolio-box .portfolio-sizer",
-				gutter: ".portfolio-box .gutter-sizer",
-			},
-			itemSelector: ".portfolio-box .portfolio-item",
-			percentPosition: true,
-		});
+        var $grid = $(".portfolio-box").isotope({
+            // options
+            masonry: {
+                columnWidth: ".portfolio-box .portfolio-sizer",
+                gutter: ".portfolio-box .gutter-sizer",
+            },
+            itemSelector: ".portfolio-item",
+            percentPosition: true,
+            filter: "*" // Стартовая настройка: показывать все
+        });
 
-		// filter items on button click
-		$(".filter-button-group").on("click", "button", function () {
-			$(".filter-button-group button").removeClass("active");
-			$(this).addClass("active");
+        $(".filter-button-group").on("click", "button", function () {
+            // Убираем активный класс у всех кнопок
+            $(".filter-button-group button").removeClass("active");
 
-			var filterValue = $(this).attr("data-filter");
-			$grid.isotope({ filter: filterValue });
-		});
+            // Добавляем активный класс к текущей кнопке
+            $(this).addClass("active");
+
+            // Получаем значение фильтра
+            var filterValue = $(this).attr("data-filter");
+
+            // Применяем фильтр
+            $grid.isotope({ filter: filterValue });
+        });
+
 
 		/*------------------------------------------------------
   	/  Portfolio Gallery Carousel

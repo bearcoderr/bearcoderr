@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'src.apps.gallery',
     'src.apps.services',
     'src.apps.worck',
+    'src.apps.pages',
     'src.models',
 
 ]
@@ -151,9 +152,7 @@ MEDIA_URL = '/media/'
 
 DEFAULT_CHARSET = 'utf-8'
 
-CELERY_BROKER_URL = 'redis://redis:6379/0'
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
+
 
 
 # Подключение отправки через селери
@@ -175,3 +174,4 @@ CSRF_TRUSTED_ORIGINS = [
     "https://bearcoder.ru",
     "https://www.bearcoder.ru",  # если используется
 ]
+

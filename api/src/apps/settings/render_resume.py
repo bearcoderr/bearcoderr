@@ -1,4 +1,5 @@
-from src.models.settings import Settings, numberSettings, experienceSettings, skillsSettings, contactSettings, socialSettings
+from src.models.settings import Settings, numberSettings, experienceSettings, skillsSettings, contactSettings, \
+    socialSettings
 from src.models.services import ServicesSite
 from io import BytesIO
 from django.http import HttpResponse
@@ -11,6 +12,9 @@ from PIL import Image
 import textwrap
 import os
 from django.conf import settings  # Для получения пути к настройкам Django
+
+filename = "Middle_Backend-разработчик_Ачкасов_Алексей_WordPress_Python_все_фреймворки".replace("\n", "_").replace(" ",
+                                                                                                                   "_")
 
 
 def generate_pdf(request):
@@ -29,7 +33,10 @@ def generate_pdf(request):
         pdfmetrics.registerFont(TTFont('NotoSansCondensed', font_path))
         pdf.setFont('NotoSansCondensed', 12)
 
-        x, y = 50, 750
+        margin = 40  # Поля с обеих сторон
+        x, y = margin, 750  # Начальные координаты с учетом левого поля
+        page_width, _ = letter
+        line_width = page_width - 2 * margin  # Ширина линии с учетом одинаковых полей по краям  # ширина линии учитывая отступы
 
         # Печать картинки (если есть)
         if settings_obj.imgHome:
@@ -69,7 +76,7 @@ def generate_pdf(request):
             pdf.drawString(x, y, line)
             y -= 15
 
-        draw_line(x, y, 500, pdf)
+        draw_line(x, y, line_width, pdf)
         y -= 15
 
         # Заголовок раздела: Числа
@@ -88,7 +95,7 @@ def generate_pdf(request):
             pdf.drawString(x, y, f"{nums.numberTitle}{nums.numberDopSimvol} {nums.numberText}")
             y -= 15
 
-        draw_line(x, y, 500, pdf)
+        draw_line(x, y, line_width, pdf)
         y -= 15
 
         # Заголовок раздела: Услуги
@@ -106,13 +113,13 @@ def generate_pdf(request):
                 pdf.setFont('NotoSansCondensed', 12)
             pdf.drawString(x, y, f"{service.titleServices}")
             y -= 15
-            service_text = textwrap.wrap(service.exeptServices, width=100)
+            service_text = textwrap.wrap(service.exeptServices, width=96)
             for service_ex in service_text:
                 pdf.drawString(x + 10, y, service_ex)
                 y -= 15
             y -= 5
 
-        draw_line(x, y, 500, pdf)
+        draw_line(x, y, line_width, pdf)
         y -= 15
 
         # Заголовок раздела: Опыт
@@ -136,7 +143,7 @@ def generate_pdf(request):
                 pdf.drawString(x + 10, y, line)
                 y -= 15
 
-        draw_line(x, y, 500, pdf)
+        draw_line(x, y, line_width, pdf)
         y -= 20
 
         # Заголовок раздела: Навыки
@@ -151,7 +158,7 @@ def generate_pdf(request):
         pdf.drawString(x, y, skills_str)
         y -= 20
 
-        draw_line(x, y, 500, pdf)
+        draw_line(x, y, line_width, pdf)
         y -= 15
 
         # Заголовок раздела: Контакты
@@ -170,14 +177,15 @@ def generate_pdf(request):
             pdf.drawString(x, y, f"{contact.nameSontact}: {contact.titleSontact}")
             y -= 15
 
-        draw_line(x, y, 500, pdf)
+        draw_line(x, y, line_width, pdf)
         y -= 15
 
         # Сохранение PDF
         pdf.save()
 
         buffer.seek(0)
-        return HttpResponse(buffer, content_type='application/pdf')
+        return HttpResponse(buffer, content_type='application/pdf',
+                            headers={'Content-Disposition': f'attachment; filename="{filename}.pdf"'})
 
     except Exception as e:
         return HttpResponse(f"Error generating PDF: {str(e)}", status=500)
